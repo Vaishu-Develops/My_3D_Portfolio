@@ -1,0 +1,219 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 3.9%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 3.9%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 3.9%;
+    --primary: 0 0% 9%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 96.1%;
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;
+    --muted-foreground: 0 0% 45.1%;
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;
+    --input: 0 0% 89.8%;
+    --ring: 0 0% 3.9%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Custom Utilities for 3D UI and Glassmorphism */
+.glass-panel {
+  @apply bg-black/40 backdrop-blur-md border border-white/10 rounded-2xl;
+}
+
+/* Removed native smooth scrolling to prevent conflict with Lenis */
+
+/* Gradient animation for hero text */
+@keyframes gradient-move {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+.animate-gradient {
+  background-size: 200% auto;
+  animation: gradient-move 3s ease infinite;
+}
+
+/* ==========================================
+   Animated 3D MacBook Air — CSS Classes
+   ========================================== */
+
+.macbook-container {
+  perspective: 500px;
+}
+
+.macbook-inner {
+  transform-style: preserve-3d;
+}
+
+.macbook-screen {
+  transform-style: preserve-3d;
+  transform-origin: 50% 100%;
+}
+
+.macbook-screen-face-one {
+  transform: translateZ(2px);
+}
+
+.macbook-body {
+  transform-style: preserve-3d;
+  transform-origin: 50% 0%;
+  transform: rotateX(-90deg);
+}
+
+.macbook-body-face-one {
+  transform-style: preserve-3d;
+  transform: translateZ(-2px);
+}
+
+.macbook-keyboard {
+  transform-style: preserve-3d;
+}
+
+.macbook-key {
+  transform: translateZ(-2px);
+}
+
+.macbook-shadow {
+  transform: rotateX(80deg) rotateY(0deg) rotateZ(0deg);
+}
+
+/* MacBook Air Keyframes */
+@keyframes rotate {
+  0% { transform: rotateX(-20deg) rotateY(0deg) rotateZ(0deg); }
+  5% { transform: rotateX(-20deg) rotateY(-20deg) rotateZ(0deg); }
+  20% { transform: rotateX(30deg) rotateY(200deg) rotateZ(0deg); }
+  25% { transform: rotateX(-60deg) rotateY(150deg) rotateZ(0deg); }
+  60% { transform: rotateX(-20deg) rotateY(130deg) rotateZ(0deg); }
+  65% { transform: rotateX(-20deg) rotateY(120deg) rotateZ(0deg); }
+  80% { transform: rotateX(-20deg) rotateY(375deg) rotateZ(0deg); }
+  85% { transform: rotateX(-20deg) rotateY(357deg) rotateZ(0deg); }
+  87% { transform: rotateX(-20deg) rotateY(360deg) rotateZ(0deg); }
+  100% { transform: rotateX(-20deg) rotateY(360deg) rotateZ(0deg); }
+}
+
+@keyframes lid-screen {
+  0% { transform: rotateX(0deg); background-position: left bottom; }
+  5% { transform: rotateX(50deg); background-position: left bottom; }
+  20% { transform: rotateX(-90deg); background-position: -150px top; }
+  25% { transform: rotateX(15deg); background-position: left bottom; }
+  30% { transform: rotateX(-5deg); background-position: right top; }
+  38% { transform: rotateX(5deg); background-position: right top; }
+  48% { transform: rotateX(0deg); background-position: right top; }
+  90% { transform: rotateX(0deg); background-position: right top; }
+  100% { transform: rotateX(0deg); background-position: right center; }
+}
+
+@keyframes lid-macbody {
+  0% { transform: rotateX(-90deg); }
+  50% { transform: rotateX(-90deg); }
+  100% { transform: rotateX(-90deg); }
+}
+
+@keyframes lid-keyboard-area {
+  0% { background-color: #dfdfdf; }
+  50% { background-color: #bbb; }
+  100% { background-color: #dfdfdf; }
+}
+
+@keyframes screen-shade {
+  0% { background-position: -20px 0px; }
+  5% { background-position: -40px 0px; }
+  20% { background-position: 200px 0; }
+  50% { background-position: -200px 0; }
+  80% { background-position: 0px 0px; }
+  85% { background-position: -30px 0; }
+  90% { background-position: -20px 0; }
+  100% { background-position: -20px 0px; }
+}
+
+@keyframes keys {
+  0% { box-shadow: 0 -2px 0 #222; }
+  5% { box-shadow: 1px -1px 0 #222; }
+  20% { box-shadow: -1px 1px 0 #222; }
+  25% { box-shadow: -1px 1px 0 #222; }
+  60% { box-shadow: -1px 1px 0 #222; }
+  80% { box-shadow: 0 -2px 0 #222; }
+  85% { box-shadow: 0 -2px 0 #222; }
+  87% { box-shadow: 0 -2px 0 #222; }
+  100% { box-shadow: 0 -2px 0 #222; }
+}
+
+@keyframes macbook-shadow-animation {
+  0% { transform: rotateX(80deg) rotateY(0deg) rotateZ(0deg); box-shadow: 0 0 60px 40px rgba(0,0,0,0.3); }
+  5% { transform: rotateX(80deg) rotateY(10deg) rotateZ(0deg); box-shadow: 0 0 60px 40px rgba(0,0,0,0.3); }
+  20% { transform: rotateX(30deg) rotateY(-20deg) rotateZ(-20deg); box-shadow: 0 0 50px 30px rgba(0,0,0,0.3); }
+  25% { transform: rotateX(80deg) rotateY(-20deg) rotateZ(50deg); box-shadow: 0 0 35px 15px rgba(0,0,0,0.1); }
+  60% { transform: rotateX(80deg) rotateY(0deg) rotateZ(-50deg) translateX(30px); box-shadow: 0 0 60px 40px rgba(0,0,0,0.3); }
+  100% { transform: rotateX(80deg) rotateY(0deg) rotateZ(0deg); box-shadow: 0 0 60px 40px rgba(0,0,0,0.3); }
+}
+
+/* Custom Animation Utility Classes */
+.custom-animate-rotate {
+  animation: rotate 18s ease-in-out infinite;
+}
+
+.custom-animate-lid-screen {
+  animation: lid-screen 18s ease-in-out infinite;
+}
+
+.custom-animate-lid-macbody {
+  animation: lid-macbody 18s ease-in-out infinite;
+}
+
+.custom-animate-lid-keyboard-area {
+  animation: lid-keyboard-area 18s ease-in-out infinite;
+}
+
+.custom-animate-screen-shade {
+  animation: screen-shade 18s ease-in-out infinite;
+}
+
+.custom-animate-keys {
+  animation: keys 18s ease-in-out infinite;
+}
+
+.custom-animate-macbook-shadow {
+  animation: macbook-shadow-animation 18s ease-in-out infinite;
+}
