@@ -217,3 +217,14 @@
 .custom-animate-macbook-shadow {
   animation: macbook-shadow-animation 18s ease-in-out infinite;
 }
+
+/* Hide Spline watermark */
+.spline-watermark,
+a[href*="spline.design"] {
+  display: none !important;
+}
+
+/* Ensure canvas background is transparent */
+canvas {
+  background: transparent !important;
+}
