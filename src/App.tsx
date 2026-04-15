@@ -15,7 +15,7 @@ import ScrollStack, { ScrollStackItem } from './components/ui/ScrollStack';
 
 function App() {
   return (
-    <div className="relative min-h-screen overflow-x-hidden text-white">
+    <div className="relative min-h-screen text-white" style={{ overflowX: 'clip' }}>
       {/* Loading Screen */}
       <LoadingScreen />
       
@@ -48,9 +48,9 @@ function App() {
           <SkillsSection />
         </ScrollStackItem>
 
-        <ScrollStackItem>
-          <ProjectsSection />
-        </ScrollStackItem>
+        {/* ProjectsSection must NOT be inside ScrollStackItem — sticky positioning
+            requires an unconstrained scroll parent with no overflow clipping */}
+        <ProjectsSection />
 
         <ScrollStackItem>
           <GallerySection />
