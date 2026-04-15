@@ -1,20 +1,20 @@
 import { motion } from 'framer-motion';
 import LogoLoop from '../ui/LogoLoop';
-import Macbook from '../ui/AnimatedMacbook';
+import Macbook from '../ui/animated-3d-mac-book-air';
 import { SiReact, SiNextdotjs, SiTypescript, SiTailwindcss, SiNodedotjs, SiPython, SiTensorflow, SiMongodb, SiExpress, SiVite, SiSocketdotio, SiGit, SiFigma } from 'react-icons/si';
 
 export default function AboutSection() {
   return (
     <section id="about" className="min-h-screen flex flex-col md:flex-row items-center justify-between w-full relative pt-20">
       
-      {/* MacBook Animation on Left */}
-      <div className="w-full md:w-1/2 h-[350px] md:h-[500px] mb-12 md:mb-0 relative order-2 md:order-1 flex items-center justify-center">
-        <div className="relative w-[300px] h-[250px] scale-[1.8] md:scale-[2.2]">
+      {/* MacBook Animation on Left - Centered relative to the About text */}
+      <div className="w-full md:w-1/2 h-[500px] md:h-[700px] mb-12 md:mb-0 relative order-2 md:order-1 flex items-center justify-center">
+        <div className="relative w-[300px] h-[300px] scale-[1.5] md:scale-[2.2]">
           <Macbook />
         </div>
       </div>
       
-      {/* Text Content */}
+      {/* Text Content on Right (Reverted) */}
       <motion.div 
         className="flex-1 min-w-0 space-y-6 order-1 md:order-2 w-full"
         initial={{ opacity: 0, x: 50 }}
