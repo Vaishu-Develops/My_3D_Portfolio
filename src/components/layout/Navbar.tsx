@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 const items = [
   { label: 'Home', href: '#hero' },
@@ -22,18 +23,38 @@ export default function Navbar() {
   const navItemsRef = useRef(null);
   const logoRef = useRef(null);
 
+  const location = useLocation();
+  const navigate = useNavigate();
+  const isHome = location.pathname === '/';
+
   const ease = 'power3.easeOut';
   const baseColor = '#0a0a0a';
   const pillColor = '#1a1a2e';
   const hoveredPillTextColor = '#a855f7';
   const pillTextColor = '#e5e5e5';
 
-  useEffect(() => {
-    const layout = () => {
-      circleRefs.current.forEach((circle, index) => {
-        if (!circle?.parentElement) return;
+  const handleNavClick = (e, href) => {
+    if (!isHome && href.startsWith('#')) {
+      e.preventDefault();
+      navigate('/');
+      setTimeout(() => {
+        const el = document.querySelector(href);
+        if (el) el.scrollIntoView();
+      }, 100);
+    }
+  };
 
-        const pill = circle.parentElement;
+  useEffect(() => {
+    // Re-run layout to ensure animations target the updated DOM sizes
+    const layout = () => {
+      // Clean up previous animations before recalculating
+      tlRefs.current.forEach(tl => tl?.kill());
+      
+      const pills = document.querySelectorAll('.nav-pill-item');
+      pills.forEach((pill, index) => {
+        const circle = circleRefs.current[index];
+        if (!circle) return;
+
         const rect = pill.getBoundingClientRect();
         const { width: w, height: h } = rect;
         const R = ((w * w) / 4 + h * h) / (2 * h);
@@ -53,7 +74,6 @@ export default function Navbar() {
         if (label) gsap.set(label, { y: 0 });
         if (white) gsap.set(white, { y: h + 12, opacity: 0 });
 
-        tlRefs.current[index]?.kill();
         const tl = gsap.timeline({ paused: true });
         tl.to(circle, { scale: 1.2, xPercent: -50, duration: 2, ease, overwrite: 'auto' }, 0);
         if (label) tl.to(label, { y: -(h + 8), duration: 2, ease, overwrite: 'auto' }, 0);
@@ -79,7 +99,7 @@ export default function Navbar() {
     if (navItems) { gsap.set(navItems, { width: 0, overflow: 'hidden' }); gsap.to(navItems, { width: 'auto', duration: 0.6, ease }); }
 
     return () => window.removeEventListener('resize', layout);
-  }, []);
+  }, [location.pathname]); // Re-run when navigation changes
 
   const handleEnter = (i) => {
     const tl = tlRefs.current[i];
@@ -132,21 +152,21 @@ export default function Navbar() {
     '--pill-gap': '3px'
   };
 
-  const basePillClasses = 'relative overflow-hidden inline-flex items-center justify-center h-full no-underline rounded-full box-border font-semibold text-[13px] leading-[0] uppercase tracking-[0.2px] whitespace-nowrap cursor-pointer px-0';
+  const basePillClasses = 'nav-pill-item relative overflow-hidden inline-flex items-center justify-center h-full no-underline rounded-full box-border font-semibold text-[13px] leading-[0] uppercase tracking-[0.2px] whitespace-nowrap cursor-pointer px-0';
 
   return (
     <div className="fixed top-[1em] z-[1000] w-full left-0 flex justify-center">
       <nav className="w-max flex items-center justify-start" aria-label="Primary" style={cssVars}>
         {/* Logo */}
-        <a
-          href="#hero"
+        <button
+          onClick={(e) => handleNavClick(e, '#hero')}
           aria-label="Home"
           ref={(el) => { logoRef.current = el; }}
-          className="rounded-full p-2 inline-flex items-center justify-center overflow-hidden"
+          className="rounded-full p-2 inline-flex items-center justify-center overflow-hidden border-0 cursor-pointer"
           style={{ width: 'var(--nav-h)', height: 'var(--nav-h)', background: 'var(--base, #000)' }}
         >
           <span className="text-lg font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">VS</span>
-        </a>
+        </button>
 
         {/* Desktop Nav */}
         <div
@@ -160,6 +180,7 @@ export default function Navbar() {
                 <a
                   role="menuitem"
                   href={item.href}
+                  onClick={(e) => handleNavClick(e, item.href)}
                   className={basePillClasses}
                   style={{ background: 'var(--pill-bg, #fff)', color: 'var(--pill-text, var(--base, #000))', paddingLeft: 'var(--pill-pad-x)', paddingRight: 'var(--pill-pad-x)' }}
                   aria-label={item.label}
@@ -179,6 +200,31 @@ export default function Navbar() {
                 </a>
               </li>
             ))}
+            
+            {/* NEW: Hire Me Button */}
+            <li role="none" className="flex h-full ml-1">
+              <button
+                role="menuitem"
+                onClick={(e) => { e.preventDefault(); navigate('/hire-me'); }}
+                className={basePillClasses}
+                style={{ background: 'linear-gradient(90deg, #2dd4bf 0%, #a855f7 100%)', color: '#fff', paddingLeft: '20px', paddingRight: '20px', border: 'none' }}
+                aria-label="Hire Me"
+                onMouseEnter={() => handleEnter(items.length)}
+                onMouseLeave={() => handleLeave(items.length)}
+              >
+                  <span
+                    className="hover-circle absolute left-1/2 bottom-0 rounded-full z-[1] block pointer-events-none"
+                    style={{ background: 'var(--base, #000)', willChange: 'transform' }}
+                    aria-hidden="true"
+                    ref={(el) => { circleRefs.current[items.length] = el; }}
+                  />
+                  <span className="label-stack relative inline-block leading-[1] z-[2]">
+                    <span className="pill-label relative z-[2] inline-block leading-[1]" style={{ willChange: 'transform' }}>Hire Me</span>
+                    <span className="pill-label-hover absolute left-0 top-0 z-[3] inline-block" style={{ color: 'var(--hover-text, #fff)', willChange: 'transform, opacity' }} aria-hidden="true">Hire Me</span>
+                  </span>
+              </button>
+            </li>
+
           </ul>
         </div>
 
@@ -209,12 +255,21 @@ export default function Navbar() {
                 href={item.href}
                 className="block py-3 px-4 text-[14px] font-medium rounded-[50px] transition-all duration-200"
                 style={{ background: 'var(--pill-bg, #fff)', color: 'var(--pill-text, #fff)' }}
-                onClick={() => setIsMobileMenuOpen(false)}
+                onClick={(e) => { setIsMobileMenuOpen(false); handleNavClick(e, item.href); }}
               >
                 {item.label}
               </a>
             </li>
           ))}
+          <li>
+            <button
+               className="block w-full py-3 px-4 text-[14px] font-bold rounded-[50px] transition-all duration-200 text-left"
+               style={{ background: 'linear-gradient(90deg, #2dd4bf 0%, #a855f7 100%)', color: '#fff', border: 'none' }}
+               onClick={() => { setIsMobileMenuOpen(false); navigate('/hire-me'); }}
+            >
+              Hire Me
+            </button>
+          </li>
         </ul>
       </div>
     </div>
