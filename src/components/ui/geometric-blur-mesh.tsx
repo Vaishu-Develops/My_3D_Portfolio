@@ -500,7 +500,10 @@ void main() {
     
     vec3 color = render(st, mouse);
     
-    gl_FragColor = vec4(color, 1.0);
+    // Calculate alpha based on color intensity to make black background transparent
+    float alpha = max(color.r, max(color.g, color.b));
+    
+    gl_FragColor = vec4(color, alpha);
 }
 `;
 
