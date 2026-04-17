@@ -3,6 +3,7 @@ import Navbar from './components/layout/Navbar';
 import LoadingScreen from './components/ui/LoadingScreen';
 import Home from './pages/Home';
 import HireMe from './pages/HireMe';
+import Contact from './pages/Contact';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/hire-me" element={<HireMe />} />
+        <Route path="/contact" element={<Contact />} />
       </Routes>
     </div>
   );
