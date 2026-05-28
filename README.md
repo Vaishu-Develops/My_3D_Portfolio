@@ -162,48 +162,7 @@ pnpm run lint       # Run ESLint to check code quality
 
 ---
 
-## 🎨 Customization & Personalization
-
-This is an **open-source template**—customize it with your own information and branding:
-
-### Update Personal Content
-Edit these files to replace example content with your own:
-
-```bash
-src/components/layout/HeroSection.tsx         # Update hero title, subtitle, CTA
-src/components/layout/AboutSection.tsx        # Replace with your bio
-src/components/layout/ExperienceSection.tsx   # Add your work experience
-src/components/layout/SkillsSection.tsx       # List your technical skills
-src/components/layout/ProjectsSection.tsx     # Showcase your projects
-src/components/layout/EducationSection.tsx    # Add your education details
-src/components/layout/ContactSection.tsx      # Update contact info
-src/components/layout/Navbar.tsx              # Customize navigation and branding
-```
-
-### Customize Colors & Theme
-Edit `tailwind.config.js` to change:
-- Primary and secondary colors
-- Font families and typography
-- Border radius and spacing
-- Dark mode settings
-
-### Modify Animations
-All animation configurations are in individual component files using:
-- **GSAP** – Edit timing, duration, and easing
-- **Framer Motion** – Modify transition types and variants
-- **Three.js** – Adjust camera, lighting, and geometry properties
-
-### Replace Assets
-Update these directories with your own content:
-```bash
-src/assets/            # Replace images, logos, and SVGs
-src/animation/         # Add custom Lottie animations
-public/                # Update favicon and metadata
-```
-
----
-
-##  Performance
+## 📊 Performance
 
 - ⚡ **Fast Build**: Vite delivers instant HMR in development
 - 📉 **Small Bundle**: ~200KB gzipped with code splitting enabled
@@ -226,26 +185,18 @@ For detailed guidelines, see [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ---
 
-## 📝 License
+## 📝 License & Usage
 
-This project is open-source and available for public use. Feel free to fork, modify, and build upon it!
-
----
-
-## 👨‍💻 Author
-
-**Vaishu-Develops**
-- GitHub: [@Vaishu-Develops](https://github.com/Vaishu-Develops)
-- Portfolio: [My_3D_Portfolio](https://github.com/Vaishu-Develops/My_3D_Portfolio)
+This project is available for use and contributions. For licensing details, see [CONTRIBUTING.md](CONTRIBUTING.md)
 
 ---
 
-## 🙌 Acknowledgments
+## � Acknowledgments
 
 - Three.js & React Three Fiber community
 - Framer Motion for smooth animations
 - Tailwind CSS for utility-first styling
-- All contributors and supporters
+- Vite and modern web tooling ecosystem
 
 ---
 
@@ -256,13 +207,14 @@ This project is open-source and available for public use. Feel free to fork, mod
 - [Vite Guide](https://vitejs.dev)
 - [Tailwind CSS](https://tailwindcss.com)
 - [GSAP Animation Library](https://gsap.com)
+- [Framer Motion](https://www.framer.com/motion)
 
 ---
 
 <div align="center">
 
-**⭐ If you find this project useful, please consider giving it a star!**
+**⭐ Star this project if you find it interesting!**
 
-Made with ❤️ by Vaishu-Develops
+Explore the cutting-edge animations and effects in this 3D portfolio showcase.
 
 </div>
