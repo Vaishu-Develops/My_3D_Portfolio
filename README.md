@@ -106,6 +106,20 @@ src/
 
 ## � Animations & Effects Showcase
 
+
+### 🧩 Effects Component Index
+- [src/components/ui/CSSStars.tsx](src/components/ui/CSSStars.tsx) — CSS starfield background
+- [src/components/ui/AtmosphereLayer.tsx](src/components/ui/AtmosphereLayer.tsx) — scroll-driven atmospheric gradients
+- [src/components/ui/FilmGrain.tsx](src/components/ui/FilmGrain.tsx) — cinematic film grain overlay
+- [src/components/ui/ScrollStack.tsx](src/components/ui/ScrollStack.tsx) — parallax scroll stacking
+- [src/components/ui/ScrollRevealElement.tsx](src/components/ui/scroll-reveal-element.tsx) — reveal-on-scroll transitions
+- [src/components/ui/ClickSpark.tsx](src/components/ui/ClickSpark.tsx) — click spark particles
+- [src/components/ui/SplashCursor.tsx](src/components/ui/SplashCursor.tsx) — animated cursor trail
+- [src/components/ui/Threads.tsx](src/components/ui/Threads.tsx) — animated thread connections
+- [src/components/ui/Plasma.tsx](src/components/ui/Plasma.tsx) — procedural plasma shader
+- [src/components/ui/LightRays.tsx](src/components/ui/LightRays.tsx) — volumetric light rays
+- [src/components/ui/text-scroll-animation.tsx](src/components/ui/text-scroll-animation.tsx) — animated text on scroll
+- [src/components/ui/TextRotator.tsx](src/components/ui/TextRotator.tsx) — rotating text effect
 This portfolio features cutting-edge visual effects and smooth animations:
 
 ### ✨ Global Effects
