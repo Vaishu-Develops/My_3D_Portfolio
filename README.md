@@ -104,18 +104,50 @@ src/
 
 ---
 
+## � Animations & Effects Showcase
+
+This portfolio features cutting-edge visual effects and smooth animations:
+
+### ✨ Global Effects
+- **3D Starfield Background** – Animated stars with parallax depth using Three.js
+- **Film Grain Overlay** – Cinematic grain effect across the entire viewport
+- **Smooth Scroll** – Lenis integration for buttery-smooth scrolling experience
+- **Page Transitions** – Framer Motion page switches with AnimatePresence
+
+### 🎨 Interactive Components
+- **Click Sparks** – Particle effects on mouse clicks
+- **Plasma Effect** – Animated plasma waves and gradients
+- **Logo Loop** – Rotating brand/logo animations
+- **Scroll Stack** – Parallax stacking effect as you scroll
+- **Threads** – Animated thread/line connections between elements
+- **Splash Cursor** – Dynamic cursor trail with fade effects
+
+### 🖼️ 3D Showcase
+- **3D Cards** – Interactive cards with 3D rotation and depth
+- **3D Image Gallery** – Scrollable 3D carousel with perspective transforms
+- **Animated Macbook** – Responsive 3D MacBook display component
+- **Background3D** – Immersive Three.js background with custom geometries
+
+### 📱 Motion & Dynamics
+- **Lottie Animations** – Smooth SVG animations (Loading screens, transitions)
+- **GSAP Tweens** – High-performance animations and morphing effects
+- **Framer Motion** – Spring physics and gesture-based interactions
+- **Loading Screen** – Animated splash screen with staggered elements
+
+---
+
 ## 🎮 Key Sections
 
-| Section | Description |
-|---------|-------------|
-| **Hero** | Eye-catching landing section with 3D background and call-to-action |
-| **About** | Personal introduction with animated text reveals |
-| **Experience** | Timeline of professional experience |
-| **Skills** | Interactive skill showcase with categorized tech stack |
-| **Projects** | Portfolio projects with descriptions and links |
-| **Gallery** | 3D image showcase and visual gallery |
-| **Education** | Academic background and certifications |
-| **Contact** | Contact form and social links |
+| Section | Description | Effects |
+|---------|-------------|---------|
+| **Hero** | Eye-catching landing with 3D background | Starfield, text reveals, click sparks |
+| **About** | Personal introduction with animations | Scroll reveals, fade-in text, GSAP tweens |
+| **Experience** | Timeline of professional journey | Staggered animations, scroll triggers |
+| **Skills** | Interactive categorized tech stack | Hover effects, progress bars, animations |
+| **Projects** | Portfolio showcase with descriptions | 3D cards, hover rotations, link effects |
+| **Gallery** | 3D image showcase and visual gallery | 3D carousel, parallax, smooth transitions |
+| **Education** | Academic background and certifications | Timeline animations, icon reveals |
+| **Contact** | Contact form and social connections | Form interactions, button effects, links |
 
 ---
 
@@ -130,20 +162,48 @@ pnpm run lint       # Run ESLint to check code quality
 
 ---
 
-## 🎨 Customization
+## 🎨 Customization & Personalization
 
-### Change Colors & Theme
-Edit `tailwind.config.js` to customize your color scheme and theme settings.
+This is an **open-source template**—customize it with your own information and branding:
+
+### Update Personal Content
+Edit these files to replace example content with your own:
+
+```bash
+src/components/layout/HeroSection.tsx         # Update hero title, subtitle, CTA
+src/components/layout/AboutSection.tsx        # Replace with your bio
+src/components/layout/ExperienceSection.tsx   # Add your work experience
+src/components/layout/SkillsSection.tsx       # List your technical skills
+src/components/layout/ProjectsSection.tsx     # Showcase your projects
+src/components/layout/EducationSection.tsx    # Add your education details
+src/components/layout/ContactSection.tsx      # Update contact info
+src/components/layout/Navbar.tsx              # Customize navigation and branding
+```
+
+### Customize Colors & Theme
+Edit `tailwind.config.js` to change:
+- Primary and secondary colors
+- Font families and typography
+- Border radius and spacing
+- Dark mode settings
 
 ### Modify Animations
-Animation configurations can be adjusted in component files using GSAP and Framer Motion settings.
+All animation configurations are in individual component files using:
+- **GSAP** – Edit timing, duration, and easing
+- **Framer Motion** – Modify transition types and variants
+- **Three.js** – Adjust camera, lighting, and geometry properties
 
-### Update Content
-Edit section components in `src/components/layout/` to personalize with your own content.
+### Replace Assets
+Update these directories with your own content:
+```bash
+src/assets/            # Replace images, logos, and SVGs
+src/animation/         # Add custom Lottie animations
+public/                # Update favicon and metadata
+```
 
 ---
 
-## 📊 Performance
+##  Performance
 
 - ⚡ **Fast Build**: Vite delivers instant HMR in development
 - 📉 **Small Bundle**: ~200KB gzipped with code splitting enabled
