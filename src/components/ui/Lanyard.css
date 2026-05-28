@@ -1,0 +1,15 @@
+.lanyard-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 50; /* Above the background components but below standard UI elements like modals if needed */
+  pointer-events: auto; /* Required to grab the lanyard */
+}
+
+/* Fix for cursor dragging */
+body {
+  margin: 0;
+  overflow-x: hidden;
+}

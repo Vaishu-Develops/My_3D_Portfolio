@@ -1,0 +1,109 @@
+/* ── Skewed Glassmorphic Card ─────────────────────── */
+
+.edu-card {
+  width: 100%;
+  max-width: 520px;
+  padding: 1.25rem 1.5rem;
+  background: rgba(198, 198, 198, 0.08);
+  border-radius: 12px;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 3px solid rgba(255, 255, 255, 0.15);
+  border-left: 2px rgba(255, 255, 255, 0.2) outset;
+  box-shadow: -40px 50px 30px rgba(0, 0, 0, 0.28);
+  transform: skewX(10deg);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  color: white;
+}
+
+.edu-card .edu-card-inner {
+  transform: skewX(-10deg);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.edu-card:hover {
+  transform: skewX(0deg);
+  background: rgba(198, 198, 198, 0.12);
+  border-bottom-color: rgba(255, 255, 255, 0.25);
+  box-shadow: -20px 40px 40px rgba(0, 0, 0, 0.35);
+}
+
+.edu-card:hover .edu-card-inner {
+  transform: skewX(0deg);
+}
+
+/* Collapsed height — only show dots + title */
+.edu-card-education {
+  height: 110px;
+}
+.edu-card-education:hover {
+  height: 200px;
+}
+
+.edu-card-cert {
+  height: 110px;
+}
+.edu-card-cert:hover {
+  height: 340px;
+}
+
+/* ── macOS traffic-light dots ─────────────────────── */
+
+.edu-dots {
+  display: flex;
+  flex-direction: row;
+  gap: 6px;
+  margin-bottom: 0.75rem;
+}
+
+.edu-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  box-shadow: -3px 3px 6px rgba(0, 0, 0, 0.3);
+}
+
+.edu-dot-red   { background-color: #ff605c; }
+.edu-dot-yellow { background-color: #ffbd44; }
+.edu-dot-green  { background-color: #00ca4e; }
+
+/* ── Card title ───────────────────────────────────── */
+
+.edu-card-title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: rgb(218, 244, 237);
+  text-shadow: -6px 4px 8px rgba(0, 0, 0, 0.5);
+  margin-bottom: 0.5rem;
+}
+
+/* ── Card body — fades in on hover ────────────────── */
+
+.edu-card-body {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.35s 0.1s ease;
+}
+
+.edu-card:hover .edu-card-body {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Responsive ───────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .edu-card {
+    transform: skewX(0deg);
+    height: auto !important;
+    max-width: 100%;
+  }
+  .edu-card .edu-card-inner {
+    transform: skewX(0deg);
+  }
+  .edu-card-body {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
