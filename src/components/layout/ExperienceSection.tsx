@@ -6,7 +6,7 @@ const experiences = [
   {
     company: 'Infosys',
     role: 'Artificial Intelligence Intern',
-    period: '2025',
+    period: '2026',
     description: 'Developed an end-to-end deep learning system for detecting and classifying defects in Printed Circuit Boards (PCBs). Custom-trained the model on the DeepPCB dataset using EfficientNet-B0 architecture, achieving 96% classification accuracy across 6 defect types.',
     tags: ['Deep Learning', 'EfficientNet-B0', 'PCB Detection', 'Python'],
   },
