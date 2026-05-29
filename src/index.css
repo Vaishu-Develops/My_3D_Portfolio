@@ -67,6 +67,25 @@
 
 /* Removed native smooth scrolling to prevent conflict with Lenis */
 
+/* Logo spinning ring */
+@keyframes logoSpin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Hire Me button — animated gradient shift */
+@keyframes hireMeGrad {
+  0%   { background-position: 0%   50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0%   50%; }
+}
+
+/* Hire Me button — shimmer sweep */
+@keyframes hireMeShimmer {
+  0%   { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
+}
+
 /* Gradient animation for hero text */
 @keyframes gradient-move {
   0%, 100% { background-position: 0% 50%; }
