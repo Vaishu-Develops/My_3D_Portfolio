@@ -6,7 +6,7 @@ import LottieDefault from 'lottie-react';
 import portalData from '../../animation/Portal time.json';
 import { CardContainer, CardBody, CardItem } from '../ui/3d-card';
 import { VaishnaviTextEffect } from '../ui/text-effect';
-import { TextRotator } from '../ui/TextRotator';
+
 import { MagneticButton } from '../ui/MagneticButton';
 
 const Lottie = (LottieDefault as any).default || LottieDefault;
@@ -15,12 +15,6 @@ const Lottie = (LottieDefault as any).default || LottieDefault;
 const Spline = React.lazy(() => import('@splinetool/react-spline'));
 
 export default function HeroSection() {
-  const customPhrases = [
-    "Welcome to my creative digital space.",
-    "Let's turn your bold visions into reality.",
-    "Building intelligent systems with a human touch.",
-    "Empowering the future through AI & Full-Stack code."
-  ];
 
   return (
     <section id="hero" className="min-h-screen w-full relative pt-24 pb-12 px-6 md:px-12 flex justify-center items-center overflow-hidden">
@@ -72,10 +66,6 @@ export default function HeroSection() {
                   <MapPin className="w-4 h-4 text-purple-400" />
                   Coimbatore, Tamil Nadu, India
                 </div>
-              </CardItem>
-              
-              <CardItem translateZ={40} className="w-full">
-                <TextRotator words={customPhrases} className="h-20 mb-8 border-l-2 border-purple-500/30 pl-6" />
               </CardItem>
 
               <CardItem translateZ={50} className="flex flex-col sm:flex-row flex-wrap gap-4 mt-8 w-full">
