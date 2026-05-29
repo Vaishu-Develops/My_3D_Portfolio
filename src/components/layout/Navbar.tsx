@@ -178,11 +178,88 @@ export default function Navbar() {
           onClick={(e) => handleNavClick(e, '#hero')}
           aria-label="Home"
           ref={(el) => { logoRef.current = el; }}
-          className="rounded-full p-2 inline-flex items-center justify-center overflow-hidden border-0 cursor-pointer"
-          style={{ width: 'var(--nav-h)', height: 'var(--nav-h)', background: 'var(--base, #000)' }}
+          className="rounded-full inline-flex items-center justify-center overflow-visible border-0 cursor-pointer relative group"
+          style={{ width: 'var(--nav-h)', height: 'var(--nav-h)', background: 'transparent' }}
         >
-          <span className="text-lg font-black bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-500">VS</span>
+          {/* Unique SVG Monogram Logo */}
+          <svg
+            width="42" height="42" viewBox="0 0 42 42"
+            fill="none" xmlns="http://www.w3.org/2000/svg"
+            style={{ overflow: 'visible' }}
+          >
+            <defs>
+              {/* Main gradient — purple → indigo */}
+              <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#a855f7" />
+                <stop offset="50%" stopColor="#6366f1" />
+                <stop offset="100%" stopColor="#2dd4bf" />
+              </linearGradient>
+              {/* Shimmer ring gradient */}
+              <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stopColor="#a855f7" stopOpacity="0.7" />
+                <stop offset="100%" stopColor="#2dd4bf" stopOpacity="0.1" />
+              </linearGradient>
+              {/* Glow filter */}
+              <filter id="logoGlow" x="-30%" y="-30%" width="160%" height="160%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2.5" result="blur" />
+                <feColorMatrix in="blur" type="matrix"
+                  values="1 0 1 0 0  0 0 1 0 0  1 0 1 0 0  0 0 0 18 -7" result="glow" />
+                <feComposite in="SourceGraphic" in2="glow" operator="over" />
+              </filter>
+            </defs>
+
+            {/* Outer spinning ring (CSS animation) */}
+            <circle
+              cx="21" cy="21" r="19"
+              stroke="url(#ringGrad)"
+              strokeWidth="1"
+              strokeDasharray="28 90"
+              strokeLinecap="round"
+              fill="none"
+              style={{ transformOrigin: '21px 21px', animation: 'logoSpin 6s linear infinite' }}
+            />
+
+            {/* Hexagon background shape */}
+            <path
+              d="M21 4 L35.5 12.5 L35.5 29.5 L21 38 L6.5 29.5 L6.5 12.5 Z"
+              fill="#0a0a0a"
+              stroke="url(#logoGrad)"
+              strokeWidth="1.2"
+              opacity="0.95"
+            />
+
+            {/* Inner glow blob */}
+            <ellipse cx="21" cy="21" rx="9" ry="9" fill="url(#logoGrad)" opacity="0.08" />
+
+            {/* "V" letter */}
+            <path
+              d="M12.5 15 L18 25.5 L21 31 L24 25.5 L29.5 15"
+              stroke="url(#logoGrad)"
+              strokeWidth="2.2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              fill="none"
+              filter="url(#logoGlow)"
+            />
+
+            {/* "S" slash — a stylised diagonal accent bar */}
+            <line
+              x1="26" y1="14"
+              x2="16" y2="28"
+              stroke="url(#logoGrad)"
+              strokeWidth="1.4"
+              strokeLinecap="round"
+              opacity="0.5"
+            />
+          </svg>
+
+          {/* Hover glow ring */}
+          <span
+            className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+            style={{ boxShadow: '0 0 0 1px rgba(168,85,247,0.4), 0 0 16px 4px rgba(99,102,241,0.25)' }}
+          />
         </button>
+
 
         {/* Desktop Nav */}
         <div
@@ -217,19 +294,18 @@ export default function Navbar() {
               </li>
             ))}
             
-            {/* NEW: Hire Me Button */}
+            {/* ── Hire Me pill — same GSAP style, rose-amber accent ── */}
             <li role="none" className="flex h-full ml-1">
               <button
                 role="menuitem"
                 onClick={(e) => { e.preventDefault(); navigate('/hire-me'); }}
                 className={basePillClasses}
                 style={{
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  color: '#2dd4bf',
+                  background: '#1a0d1a',
+                  color: '#fb923c',
                   paddingLeft: '18px',
                   paddingRight: '18px',
-                  border: '1px solid rgba(45, 212, 191, 0.35)',
-                  transition: 'border-color 0.3s ease',
+                  border: '1px solid rgba(251,146,60,0.35)',
                 }}
                 aria-label="Hire Me"
                 onMouseEnter={() => handleEnter(items.length)}
@@ -238,18 +314,19 @@ export default function Navbar() {
                 <span
                   className="hover-circle absolute left-1/2 bottom-0 rounded-full z-[1] block pointer-events-none"
                   style={{
-                    background: 'linear-gradient(90deg, #2dd4bf 0%, #a855f7 100%)',
+                    background: 'linear-gradient(135deg, #f97316 0%, #ec4899 100%)',
                     willChange: 'transform',
                   }}
                   aria-hidden="true"
                   ref={(el) => { circleRefs.current[items.length] = el; }}
                 />
                 <span className="label-stack relative inline-block leading-[1] z-[2]">
-                  <span className="pill-label relative z-[2] inline-block leading-[1] text-teal-300 font-bold" style={{ willChange: 'transform' }}>Hire Me</span>
-                  <span className="pill-label-hover absolute left-0 top-0 z-[3] inline-block text-white font-bold" style={{ color: '#fff', willChange: 'transform, opacity' }} aria-hidden="true">Hire Me</span>
+                  <span className="pill-label relative z-[2] inline-block leading-[1] font-bold" style={{ color: '#fb923c', willChange: 'transform' }}>Hire Me</span>
+                  <span className="pill-label-hover absolute left-0 top-0 z-[3] inline-block font-bold" style={{ color: '#fff', willChange: 'transform, opacity' }} aria-hidden="true">Hire Me</span>
                 </span>
               </button>
             </li>
+
 
           </ul>
         </div>
