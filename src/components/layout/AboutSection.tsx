@@ -1,9 +1,11 @@
 import { useRef, useEffect, useState } from 'react';
-import { motion, useInView } from 'framer-motion';
+import { motion, useInView, AnimatePresence } from 'framer-motion';
 import LogoLoop from '../ui/LogoLoop';
 import Macbook from '../ui/animated-3d-mac-book-air';
 import { ScrollRevealHeading } from '../ui/text-scroll-animation';
-import { MapPin, Quote, Sparkles, Brain, Code2, Cpu } from 'lucide-react';
+import { GlobalSpotlight, ParticleCard } from '../ui/MagicBento';
+import '../ui/MagicBento.css';
+import { MapPin, Sparkles, Brain, Code2, Cpu, Zap, Target as TargetIcon, Lightbulb, Rocket } from 'lucide-react';
 import {
   SiReact, SiNextdotjs, SiTypescript, SiTailwindcss, SiNodedotjs,
   SiPython, SiTensorflow, SiMongodb, SiExpress, SiVite,
@@ -42,43 +44,165 @@ function AnimatedCounter({ target, suffix = '', label }: {
   );
 }
 
-/* ── Quote rotator ────────────────────────────────────── */
-const quotes = [
-  "Code is poetry that machines can understand.",
-  "Building AI that makes a difference.",
-  "From pixels to neural networks — I do it all.",
-  "The best code is code that tells a story.",
+/* ── Mindset Quotes ───────────────────────────────────── */
+const mindsetQuotes = [
+  { text: "The best code is code that tells a story.",         tag: "on craft"       },
+  { text: "Build fast, learn faster, ship with purpose.",      tag: "on velocity"    },
+  { text: "AI is a tool — the insight still comes from us.",   tag: "on perspective" },
+  { text: "Every dataset is a puzzle waiting to be solved.",   tag: "on curiosity"   },
 ];
 
-function RotatingQuote() {
-  const [index, setIndex] = useState(0);
+const coreTraits = [
+  { icon: Zap,       label: 'Fast Learner',     color: '#FBBF24', glow: 'rgba(251,191,36,0.15)'  },
+  { icon: TargetIcon,    label: 'Impact-Driven',    color: '#F87171', glow: 'rgba(248,113,113,0.15)' },
+  { icon: Lightbulb, label: 'Problem Solver',   color: '#2DD4BF', glow: 'rgba(45,212,191,0.15)'  },
+  { icon: Rocket,    label: 'Builder at Heart', color: '#A78BFA', glow: 'rgba(167,139,250,0.15)' },
+];
 
+const QUOTE_DURATION = 4500; // ms per quote
+
+function MindsetCard() {
+  const [index, setIndex]       = useState(0);
+  const [progress, setProgress] = useState(0);
+  const startRef                = useRef<number | null>(null);
+  const rafRef                  = useRef<number>(0);
+
+  // Smooth progress bar that drives auto-advance
   useEffect(() => {
-    const timer = setInterval(() => {
-      setIndex((prev) => (prev + 1) % quotes.length);
-    }, 4000);
-    return () => clearInterval(timer);
-  }, []);
+    startRef.current = null;
+
+    const tick = (ts: number) => {
+      if (startRef.current === null) startRef.current = ts;
+      const elapsed = ts - startRef.current;
+      const pct = Math.min((elapsed / QUOTE_DURATION) * 100, 100);
+      setProgress(pct);
+      if (pct < 100) {
+        rafRef.current = requestAnimationFrame(tick);
+      } else {
+        setIndex(prev => (prev + 1) % mindsetQuotes.length);
+      }
+    };
+
+    rafRef.current = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, [index]);
+
+  const goTo = (i: number) => {
+    cancelAnimationFrame(rafRef.current);
+    setProgress(0);
+    setIndex(i);
+  };
 
   return (
-    <div className="relative h-16 overflow-hidden">
-      {quotes.map((q, i) => (
-        <motion.p
-          key={i}
-          className="absolute inset-0 text-gray-300 italic text-sm leading-relaxed"
-          initial={{ opacity: 0, y: 20 }}
-          animate={{
-            opacity: i === index ? 1 : 0,
-            y: i === index ? 0 : -20,
-          }}
-          transition={{ duration: 0.6, ease: 'easeInOut' }}
+    <div className="flex flex-col flex-1 min-h-0 select-none">
+
+      {/* ── Quote area ── */}
+      <div className="flex-1 relative overflow-hidden flex flex-col justify-center">
+
+        {/* Giant decorative " in background */}
+        <span
+          aria-hidden
+          className="absolute -top-6 -left-3 font-serif font-black leading-none pointer-events-none"
+          style={{ fontSize: '9rem', color: 'rgba(139,92,246,0.08)' }}
         >
-          "{q}"
-        </motion.p>
-      ))}
+          ❝
+        </span>
+
+        {/* Counter top-right */}
+        <div className="absolute top-0 right-0 flex items-center gap-1 z-10">
+          <span className="text-[10px] font-mono text-white/20 tabular-nums">
+            {String(index + 1).padStart(2, '0')}&nbsp;/&nbsp;{mindsetQuotes.length}
+          </span>
+        </div>
+
+        {/* Animated quote text */}
+        <div className="relative z-10 pr-10 pt-2">
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: 18 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -18 }}
+              transition={{ duration: 0.38, ease: [0.25, 0.46, 0.45, 0.94] }}
+            >
+              {/* Left accent bar */}
+              <div className="flex gap-4 items-start">
+                <div
+                  className="flex-shrink-0 w-[3px] rounded-full mt-1 self-stretch"
+                  style={{ background: 'linear-gradient(to bottom, #7C3AED, #4F46E5)' }}
+                />
+                <div>
+                  <p className="text-white font-semibold text-base md:text-[1.05rem] leading-relaxed tracking-[-0.01em]">
+                    {mindsetQuotes[index].text}
+                  </p>
+                  <span className="inline-flex items-center gap-1.5 mt-2.5">
+                    <span className="block w-3 h-px bg-purple-400/50" />
+                    <span
+                      className="text-[10px] font-mono uppercase tracking-[0.18em]"
+                      style={{ color: 'rgba(167,139,250,0.65)' }}
+                    >
+                      {mindsetQuotes[index].tag}
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
+      </div>
+
+      {/* ── Progress + dots row ── */}
+      <div className="mt-4 mb-3 flex items-center gap-3">
+        {/* Thin animated progress bar */}
+        <div className="flex-1 h-[2px] rounded-full overflow-hidden bg-white/[0.06]">
+          <div
+            className="h-full rounded-full"
+            style={{
+              width: `${progress}%`,
+              background: 'linear-gradient(90deg, #7C3AED, #6366F1)',
+              transition: 'width 0.05s linear',
+            }}
+          />
+        </div>
+        {/* Clickable dot indicators */}
+        <div className="flex gap-1.5 flex-shrink-0">
+          {mindsetQuotes.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => goTo(i)}
+              className="rounded-full transition-all duration-300"
+              style={{
+                width:  i === index ? '18px' : '5px',
+                height: '5px',
+                background: i === index ? '#7C3AED' : 'rgba(255,255,255,0.15)',
+              }}
+            />
+          ))}
+        </div>
+      </div>
+
+      {/* ── Core traits — single row ── */}
+      <div className="grid grid-cols-4 gap-1.5">
+        {coreTraits.map(({ icon: Icon, label, color, glow }) => (
+          <div
+            key={label}
+            className="flex flex-col items-center gap-1 py-2 px-1 rounded-xl text-center transition-transform hover:scale-105 cursor-default"
+            style={{ background: glow, border: `1px solid ${color}20` }}
+          >
+            <Icon style={{ color, width: '14px', height: '14px', flexShrink: 0 }} />
+            <span
+              className="text-[9px] font-medium leading-tight"
+              style={{ color: 'rgba(209,213,219,0.85)' }}
+            >
+              {label}
+            </span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
+
 
 /* ── Animated India Map / Location ───────────────────── */
 function LocationCard() {
@@ -155,10 +279,11 @@ function LocationCard() {
   );
 }
 
-/* ── Glassmorphic Bento Card ──────────────────────────── */
-function BentoCard({ children, className = '', delay = 0 }: {
+/* ── Glassmorphic Bento Card with MagicBento effects ─── */
+function BentoCard({ children, className = '', innerClassName = '', delay = 0 }: {
   children: React.ReactNode;
   className?: string;
+  innerClassName?: string;
   delay?: number;
 }) {
   return (
@@ -167,23 +292,22 @@ function BentoCard({ children, className = '', delay = 0 }: {
       whileInView={{ opacity: 1, y: 0, scale: 1 }}
       viewport={{ once: true, margin: '-40px' }}
       transition={{ duration: 0.6, delay, ease: [0.25, 0.46, 0.45, 0.94] }}
-      className={`
-        relative overflow-hidden rounded-2xl
-        bg-white/[0.03] backdrop-blur-md
-        border border-white/[0.08]
-        hover:border-white/[0.16] hover:bg-white/[0.05]
-        transition-all duration-500
-        group
-        ${className}
-      `}
+      className={className}
     >
-      {/* Subtle top highlight line */}
-      <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-      {/* Hover gradient overlay */}
-      <div className="absolute inset-0 bg-gradient-to-br from-purple-500/[0.04] via-transparent to-teal-500/[0.04] opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-      <div className="relative z-10">
-        {children}
-      </div>
+      <ParticleCard
+        className={`magic-bento-card magic-bento-card--border-glow magic-bento-no-ratio ${innerClassName}`}
+        particleCount={12}
+        glowColor="132, 0, 255"
+        enableTilt={false}
+        clickEffect={true}
+        enableMagnetism={false}
+      >
+        {/* Subtle top highlight line */}
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+        <div className="relative z-10 h-full flex flex-col">
+          {children}
+        </div>
+      </ParticleCard>
     </motion.div>
   );
 }
@@ -200,8 +324,18 @@ function SkillTag({ icon, label, color }: { icon: React.ReactNode; label: string
 
 /* ── Main About Section (Bento Grid) ──────────────────── */
 export default function AboutSection() {
+  const bentoGridRef = useRef<HTMLDivElement>(null);
+
   return (
     <section id="about" className="w-full relative z-10 py-16 md:py-24 px-4 sm:px-6 md:px-8 lg:px-16">
+      {/* MagicBento global spotlight scoped to this grid */}
+      <GlobalSpotlight
+        gridRef={bentoGridRef}
+        enabled={true}
+        spotlightRadius={400}
+        glowColor="132, 0, 255"
+      />
+
       {/* Section Heading */}
       <div className="mb-10 md:mb-14">
         <ScrollRevealHeading
@@ -212,12 +346,12 @@ export default function AboutSection() {
       </div>
 
       {/* ── Bento Grid ── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 max-w-7xl mx-auto">
+      <div ref={bentoGridRef} className="bento-section grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 max-w-7xl mx-auto">
 
         {/* ── Row 1: Bio (2 col) + Stats (1 col) + Location (1 col) ── */}
 
         {/* Bio Card — 2 cols, auto height (no row-span) */}
-        <BentoCard className="sm:col-span-2 p-6 md:p-8" delay={0}>
+        <BentoCard className="sm:col-span-2" innerClassName="p-6 md:p-8" delay={0}>
           <div className="flex items-center gap-2 mb-4">
             <Sparkles className="w-4 h-4 text-purple-400" />
             <span className="text-xs uppercase tracking-[0.2em] text-purple-300/70 font-medium">Who I Am</span>
@@ -230,7 +364,7 @@ export default function AboutSection() {
             AI/ML systems across deep learning, large language models, and generative AI.
           </p>
           <p className="text-gray-400 leading-relaxed text-sm mb-4">
-            Proven track record across <strong className="text-teal-300/90">5 internships</strong> — including{' '}
+            Proven track record across <strong className="text-teal-300/90">6 internships</strong> — including{' '}
             <strong className="text-teal-300/90">Infosys</strong> and <strong className="text-teal-300/90">Innomatics</strong>{' '}
             — delivering production-level models (96% accuracy PCB defect classifier), RAG/Agentic pipelines,
             and multi-agent AI applications.
@@ -249,28 +383,28 @@ export default function AboutSection() {
         </BentoCard>
 
         {/* Stats Card */}
-        <BentoCard className="p-5 md:p-6" delay={0.08}>
+        <BentoCard innerClassName="p-5 md:p-6" delay={0.08}>
           <div className="flex items-center gap-2 mb-5">
             <span className="text-xs uppercase tracking-[0.2em] text-gray-500 font-medium">Stats</span>
           </div>
           <div className="space-y-5">
-            <AnimatedCounter target={3} suffix="+" label="Years Exp" />
+            <AnimatedCounter target={1} suffix="+" label="Years Exp" />
             <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
             <AnimatedCounter target={12} suffix="+" label="Projects" />
             <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-            <AnimatedCounter target={5} suffix="" label="Internships" />
+            <AnimatedCounter target={6} suffix="" label="Internships" />
           </div>
         </BentoCard>
 
         {/* Location Card — fixed with SVG India map */}
-        <BentoCard className="p-5 md:p-6" delay={0.12}>
+        <BentoCard innerClassName="p-5 md:p-6" delay={0.12}>
           <LocationCard />
         </BentoCard>
 
         {/* ── Row 2: Macbook (2 col) + Quote (2 col) ── */}
 
         {/* Macbook Card — fixed height, relative container for absolute macbook positioning */}
-        <BentoCard className="sm:col-span-2 overflow-hidden" delay={0.15}>
+        <BentoCard className="sm:col-span-2" delay={0.15}>
           <div
             className="relative w-full flex items-center justify-center"
             style={{ height: '300px' }}
@@ -295,26 +429,29 @@ export default function AboutSection() {
           </div>
         </BentoCard>
 
-        {/* Quote Card */}
-        <BentoCard className="sm:col-span-2 p-5 md:p-6 flex flex-col justify-between" delay={0.18}>
-          <div className="flex items-center gap-2 mb-4">
-            <Quote className="w-4 h-4 text-purple-400/60" />
-            <span className="text-xs uppercase tracking-[0.2em] text-gray-500 font-medium">Mindset</span>
+        {/* Mindset Card */}
+        <BentoCard className="sm:col-span-2" innerClassName="p-5 md:p-6 flex flex-col" delay={0.18}>
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2">
+              <Brain className="w-4 h-4 text-purple-400" />
+              <span className="text-xs uppercase tracking-[0.2em] text-purple-300/70 font-medium">Mindset</span>
+            </div>
+            {/* Live pulse indicator */}
+            <div className="flex items-center gap-1.5">
+              <span className="relative flex h-2 w-2">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-purple-400 opacity-60" />
+                <span className="relative inline-flex rounded-full h-2 w-2 bg-purple-500" />
+              </span>
+              <span className="text-[9px] font-mono uppercase tracking-widest text-purple-400/50">live</span>
+            </div>
           </div>
-          <RotatingQuote />
-          {/* Decorative divider */}
-          <div className="mt-4 pt-4 border-t border-white/5">
-            <p className="text-xs text-gray-600 italic">
-              Proficient in Python, PyTorch, LangChain, and the full ML lifecycle
-              from data wrangling to containerised deployment.
-            </p>
-          </div>
+          <MindsetCard />
         </BentoCard>
 
         {/* ── Row 3: Tech Stack (full width) ── */}
 
         {/* Tech Stack Card */}
-        <BentoCard className="col-span-1 sm:col-span-2 lg:col-span-4 p-4 md:p-5" delay={0.2}>
+        <BentoCard className="col-span-1 sm:col-span-2 lg:col-span-4" innerClassName="p-4 md:p-5" delay={0.2}>
           <div className="flex items-center gap-2 mb-3">
             <span className="text-xs uppercase tracking-[0.2em] text-gray-500 font-medium">Tech Stack</span>
           </div>
