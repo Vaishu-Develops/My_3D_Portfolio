@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect, useState, useCallback, type ReactNode } from 'react';
+import { useRef, useEffect, useState, type ReactNode } from 'react';
 import { motion, useMotionValue, useSpring } from 'framer-motion';
 
 /** Props for the {@link MagneticButton} component. */
