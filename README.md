@@ -106,9 +106,8 @@ src/
 
 ## � Animations & Effects Showcase
 
-
+ 
 ### 🧩 Effects Component Index
-- [src/components/ui/CSSStars.tsx](src/components/ui/CSSStars.tsx) — CSS starfield background
 - [src/components/ui/AtmosphereLayer.tsx](src/components/ui/AtmosphereLayer.tsx) — scroll-driven atmospheric gradients
 - [src/components/ui/FilmGrain.tsx](src/components/ui/FilmGrain.tsx) — cinematic film grain overlay
 - [src/components/ui/ScrollStack.tsx](src/components/ui/ScrollStack.tsx) — parallax scroll stacking
