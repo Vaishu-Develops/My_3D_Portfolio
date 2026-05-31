@@ -1,18 +1,12 @@
 'use client';
 
 import {
-  useRef,
   useEffect,
+  useMemo,
   useState,
   type ReactNode,
 } from 'react';
-import {
-  motion,
-  useScroll,
-  useTransform,
-  useSpring,
-  useMotionValueEvent,
-} from 'framer-motion';
+import { motion } from 'framer-motion';
 
 /** Allowed reveal directions. */
 export type RevealDirection = 'left' | 'right' | 'top' | 'bottom';
@@ -68,9 +62,7 @@ export function ScrollRevealElement({
   className = '',
   once = true,
 }: ScrollRevealElementProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
   const [isMobile, setIsMobile] = useState(false);
-  const [hasAnimated, setHasAnimated] = useState(false);
 
   // Detect mobile width
   useEffect(() => {
@@ -84,73 +76,35 @@ export function ScrollRevealElement({
   const resolvedDirection: RevealDirection = isMobile ? 'bottom' : direction;
   const resolvedDistance = isMobile ? 50 : distance;
 
-  // Scroll tracking — trigger earlier so animation is more visible
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ['start 95%', 'start 30%'],
-  });
+  const { initialStyle, animateStyle } = useMemo(() => {
+    const isHorizontal = resolvedDirection === 'left' || resolvedDirection === 'right';
+    const sign = resolvedDirection === 'right' || resolvedDirection === 'bottom' ? 1 : -1;
+    const initialOffset = sign * resolvedDistance;
 
-  // Clamp ranges to [0, 1]
-  const clamp = (v: number) => Math.min(1, Math.max(0, v));
-  const tStart = clamp(0 + delay);
-  const tEnd = clamp(0.6 + delay);
-
-  // Build initial offset based on direction
-  const isHorizontal = resolvedDirection === 'left' || resolvedDirection === 'right';
-  // 'left' means element comes from the left (starts at negative x)
-  // 'right' means element comes from the right (starts at positive x)
-  const sign = resolvedDirection === 'right' || resolvedDirection === 'bottom' ? 1 : -1;
-  const initialOffset = sign * resolvedDistance;
-
-  // Transform scroll progress → visual properties
-  const translateRaw = useTransform(
-    scrollYProgress,
-    [tStart, tEnd],
-    [initialOffset, 0],
-    { clamp: true }
-  );
-  const opacityRaw = useTransform(
-    scrollYProgress,
-    [tStart, clamp(tStart + 0.4)],
-    [0, 1],
-    { clamp: true }
-  );
-
-  // Apply spring physics for elastic, natural feel
-  const translateSpring = useSpring(translateRaw, {
-    stiffness: 80,
-    damping: 20,
-    mass: 0.8,
-  });
-  const opacitySpring = useSpring(opacityRaw, {
-    stiffness: 120,
-    damping: 30,
-  });
-
-  // Freeze after first reveal when `once` is true
-  useMotionValueEvent(opacityRaw, 'change', (latest) => {
-    if (once && latest >= 0.99 && !hasAnimated) {
-      setHasAnimated(true);
-    }
-  });
-
-  const motionStyle = isHorizontal
-    ? {
-        x: hasAnimated ? 0 : translateSpring,
-        y: 0,
-        opacity: hasAnimated ? 1 : opacitySpring,
-      }
-    : {
-        x: 0,
-        y: hasAnimated ? 0 : translateSpring,
-        opacity: hasAnimated ? 1 : opacitySpring,
+    if (isHorizontal) {
+      return {
+        initialStyle: { x: initialOffset, y: 0, opacity: 0 },
+        animateStyle: { x: 0, y: 0, opacity: 1 }
       };
+    }
+
+    return {
+      initialStyle: { x: 0, y: initialOffset, opacity: 0 },
+      animateStyle: { x: 0, y: 0, opacity: 1 }
+    };
+  }, [resolvedDirection, resolvedDistance]);
 
   return (
     <motion.div
-      ref={containerRef}
       className={className}
-      style={motionStyle}
+      initial={initialStyle}
+      whileInView={animateStyle}
+      viewport={{ once, amount: 0.3 }}
+      transition={{
+        delay,
+        duration: 0.6,
+        ease: [0.16, 1, 0.3, 1]
+      }}
     >
       {children}
     </motion.div>
