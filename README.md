@@ -58,7 +58,7 @@ The project uses the following animation patterns: GSAP tweens for timeline cont
 - 🎭 **Advanced Animations** – GSAP, Framer Motion, and Lottie for smooth transitions
 - 🎯 **Interactive Components** – Custom UI elements with click effects and visual feedback
 - 🔥 **Modern Stack** – React 19, TypeScript, Tailwind CSS for maintainability
-- 📦 **Modular Architecture** – Clean component structure for easy customization
+- 📦 **Modular Architecture** – Clean component structure for easy customization..
 
 ---
 
