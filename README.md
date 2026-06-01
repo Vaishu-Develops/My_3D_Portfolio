@@ -1,12 +1,51 @@
 # 🚀 My 3D Portfolio
 
 > A stunning, interactive 3D portfolio website showcasing modern web technologies and creative design. Built with React, TypeScript, Three.js, and cutting-edge animations.
-
 ![React](https://img.shields.io/badge/React-19.2-61dafb?style=flat-square&logo=react)
 ![TypeScript](https://img.shields.io/badge/TypeScript-6.0-3178c6?style=flat-square&logo=typescript)
 ![Vite](https://img.shields.io/badge/Vite-8.0-646cff?style=flat-square&logo=vite)
 ![Three.js](https://img.shields.io/badge/Three.js-183.2-000000?style=flat-square&logo=threedotjs)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-38b2ac?style=flat-square&logo=tailwind-css)
+
+<!-- Hero banner (visual) -->
+<p align="center">
+	<img src="src/assets/hero.png" alt="Hero banner" width="900" />
+</p>
+
+## 🎨 Visual Showcase
+
+Below are live visual assets and component previews that demonstrate the animations and effects used throughout the site. Scroll to the "Effects Component Index" for exact component names.
+
+<div align="center">
+	<table>
+		<tr>
+			<td><img src="src/assets/hero.png" alt="Hero preview" width="420" style="border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.6)"/></td>
+			<td><img src="src/components/ui/lanyard.png" alt="Lanyard preview" width="300" style="border-radius:12px; box-shadow:0 20px 60px rgba(0,0,0,0.6)"/></td>
+		</tr>
+		<tr>
+			<td align="center"><sub>Hero 3D background preview</sub></td>
+			<td align="center"><sub>Animated lanyard / badge preview</sub></td>
+		</tr>
+	</table>
+</div>
+
+---
+
+## ✨ Animated Snippets (CSS)
+
+Here's a tiny CSS snippet used across the UI for subtle hover motion and glow — it illustrates the style of micro-interactions used in the site:
+
+```css
+.glow-hover {
+	transition: transform 240ms cubic-bezier(.16,1,.3,1), box-shadow 240ms;
+}
+.glow-hover:hover {
+	transform: translateY(-6px) scale(1.02);
+	box-shadow: 0 18px 48px rgba(125, 85, 250, 0.16);
+}
+```
+
+The project uses the following animation patterns: GSAP tweens for timeline control, Framer Motion for page and component transitions, and small WebGL shaders (via `ogl`/Three.js) for plasma/light-ray effects.
 
 ---
 
