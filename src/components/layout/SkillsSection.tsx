@@ -77,7 +77,7 @@ export default function SkillsSection() {
   return (
     <section id="skills" className="w-full relative z-10 text-white">
       {/* Section Heading */}
-      <div className="px-8 md:px-16 pt-24 pb-8">
+      <div className="px-4 sm:px-8 md:px-16 pt-24 pb-8">
         <ScrollRevealHeading
           text="Technical"
           highlightText="Skills"
@@ -87,7 +87,7 @@ export default function SkillsSection() {
       </div>
 
       {/* ─── Stacking cards area ─── */}
-      <div className="flex justify-between px-8 md:px-16">
+      <div className="flex justify-between px-4 sm:px-8 md:px-16">
         
         {/* LEFT column: Woven Light 3D Canvas — stays sticky, no scroll-reveal wrapper */}
         <div className="hidden md:flex sticky top-0 h-screen w-[45%] items-center justify-center overflow-hidden">
@@ -105,7 +105,7 @@ export default function SkillsSection() {
                 delay={0.05}
               >
                 <article
-                  className={`group relative w-full max-w-[32rem] rounded-3xl ${cat.rotation} p-8 flex flex-col overflow-hidden border border-white/10 backdrop-blur-xl shadow-[0_30px_100px_rgba(0,0,0,0.8)] transition-all duration-500 hover:border-white/20`}
+                  className={`group relative w-full max-w-[32rem] rounded-3xl ${cat.rotation === 'rotate-6' ? 'md:rotate-6' : cat.rotation === '-rotate-6' ? 'md:-rotate-6' : cat.rotation === 'rotate-3' ? 'md:rotate-3' : cat.rotation === '-rotate-3' ? 'md:-rotate-3' : ''} rotate-0 p-6 sm:p-8 flex flex-col overflow-hidden border border-white/10 backdrop-blur-xl shadow-[0_30px_100px_rgba(0,0,0,0.8)] transition-all duration-500 hover:border-white/20`}
                   style={{ 
                     background: `linear-gradient(135deg, ${cat.color}d9 0%, rgba(5, 5, 10, 0.95) 100%)` 
                   }}
