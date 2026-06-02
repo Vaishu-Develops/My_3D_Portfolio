@@ -36,7 +36,7 @@ export default function ProjectsSection() {
   return (
     <section id="projects" className="text-white w-full">
       {/* Section Heading */}
-      <div className="px-8 md:px-16 pt-24 pb-8">
+      <div className="px-4 sm:px-8 md:px-16 pt-24 pb-8">
         <ScrollRevealHeading
           text="Featured"
           highlightText="Works"
@@ -45,7 +45,7 @@ export default function ProjectsSection() {
       </div>
 
       {/* ─── Stacking cards area ─── */}
-      <div className="flex justify-between px-8 md:px-16">
+      <div className="flex justify-between px-4 sm:px-8 md:px-16">
 
         {/* LEFT column: project cards with flying reveal */}
         <div className="grid gap-2">
@@ -56,7 +56,7 @@ export default function ProjectsSection() {
                 delay={0.05}
               >
                 <article
-                  className={`group relative h-[380px] w-full max-w-[32rem] rounded-3xl ${card.rotation} p-8 flex flex-col justify-between overflow-hidden border border-white/10 backdrop-blur-xl shadow-[0_30px_100px_rgba(0,0,0,0.8)] transition-all duration-500 hover:border-white/20`}
+                  className={`group relative h-[380px] w-full max-w-[32rem] rounded-3xl ${card.rotation === 'rotate-6' ? 'md:rotate-6' : card.rotation === '-rotate-6' ? 'md:-rotate-6' : card.rotation === 'rotate-3' ? 'md:rotate-3' : card.rotation === '-rotate-3' ? 'md:-rotate-3' : ''} rotate-0 p-6 sm:p-8 flex flex-col justify-between overflow-hidden border border-white/10 backdrop-blur-xl shadow-[0_30px_100px_rgba(0,0,0,0.8)] transition-all duration-500 hover:border-white/20`}
                   style={{ 
                     background: `linear-gradient(135deg, ${card.color}d9 0%, rgba(5, 5, 10, 0.95) 100%)` 
                   }}
