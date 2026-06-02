@@ -27,7 +27,7 @@ export default function EducationSection() {
   return (
     <section id="education" className="w-full relative z-10 py-24">
       {/* Section Heading */}
-      <div className="px-8 md:px-16 pb-12">
+      <div className="px-4 sm:px-8 md:px-16 pb-12">
         <ScrollRevealHeading
           text="Education &"
           highlightText="Certifications"
@@ -37,7 +37,7 @@ export default function EducationSection() {
       </div>
 
       {/* ─── Two-column layout: left LayeredText, right cards ─── */}
-      <div className="flex flex-col md:flex-row justify-between px-8 md:px-16 items-center">
+      <div className="flex flex-col md:flex-row justify-between px-4 sm:px-8 md:px-16 items-center">
 
         {/* LEFT column: LayeredText animation */}
         <div className="w-full md:w-[45%] flex justify-center md:justify-start">
