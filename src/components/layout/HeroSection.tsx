@@ -87,13 +87,13 @@ export default function HeroSection() {
 
         {/* Right Content - Spline 3D Scene */}
         <motion.div
-          className="relative z-30 w-full lg:w-1/2 h-[500px] lg:h-[800px] flex items-center justify-center"
+          className="relative z-30 w-full lg:w-1/2 h-[280px] sm:h-[420px] lg:h-[800px] flex items-center justify-center"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
         >
           {/* Expanded container width to stop clipping the hand */}
-          <div className="absolute w-[130%] lg:w-[150%] h-[120%] right-[-15%] lg:right-[-35%] top-[-10%] pointer-events-auto">
+          <div className="absolute w-[110%] sm:w-[130%] lg:w-[150%] h-[110%] sm:h-[120%] left-1/2 -translate-x-1/2 lg:left-auto lg:translate-x-0 lg:right-[-35%] top-[-5%] lg:top-[-10%] pointer-events-auto">
             <Suspense fallback={
               <div className="w-full h-full flex items-center justify-center">
                 <div className="w-8 h-8 rounded-full border-2 border-purple-500 border-t-transparent animate-spin" />
