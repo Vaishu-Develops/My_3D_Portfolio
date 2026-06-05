@@ -3,6 +3,7 @@ import { AnimatePresence } from 'framer-motion';
 import Navbar from './components/layout/Navbar';
 import LoadingScreen from './components/ui/LoadingScreen';
 import FilmGrain from './components/ui/FilmGrain';
+import TouchRippleTrail from './components/ui/TouchRippleTrail';
 import Home from './pages/Home';
 import HireMe from './pages/HireMe';
 import Contact from './pages/Contact';
@@ -15,6 +16,9 @@ function App() {
       {/* Loading Screen and Navbar persist across pages */}
       <LoadingScreen />
       <Navbar />
+
+      {/* Global Touch Ripple Trail */}
+      <TouchRippleTrail />
 
       {/* Global Film Grain Overlay */}
       <FilmGrain />
