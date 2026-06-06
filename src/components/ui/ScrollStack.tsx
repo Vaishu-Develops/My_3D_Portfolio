@@ -1,12 +1,23 @@
 // @ts-nocheck
 import { useLayoutEffect, useRef, useCallback } from 'react';
+import { motion } from 'framer-motion';
 import Lenis from 'lenis';
 
-export const ScrollStackItem = ({ children, itemClassName = '' }: { children: React.ReactNode; itemClassName?: string }) => (
-  <div className={`relative w-full mb-12 rounded-[40px] shadow-[0_0_30px_rgba(0,0,0,0.1)] box-border ${itemClassName}`.trim()}>
-    {children}
-  </div>
-);
+export const ScrollStackItem = ({ children, itemClassName = '' }: { children: React.ReactNode; itemClassName?: string }) => {
+  const isReduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  return (
+    <motion.div 
+      initial={isReduced ? { opacity: 1 } : { opacity: 0.3, y: 15 }}
+      whileInView={isReduced ? { opacity: 1 } : { opacity: 1, y: 0 }}
+      viewport={{ once: true, amount: 0.12, margin: "-8% 0px -8% 0px" }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className={`relative w-full mb-12 rounded-[40px] shadow-[0_0_30px_rgba(0,0,0,0.1)] box-border bg-transparent ${itemClassName}`.trim()}
+    >
+      {children}
+    </motion.div>
+  );
+};
 
 const ScrollStack = ({ children, className = '', useWindowScroll = true }: { children: React.ReactNode; className?: string; useWindowScroll?: boolean; }) => {
   const scrollerRef = useRef<HTMLDivElement>(null);
