@@ -57,8 +57,8 @@ export function VaishnaviTextEffect({
     >
       <defs>
         <linearGradient id="gradient" x1="0" y1="0" x2="1100" y2="0" gradientUnits="userSpaceOnUse">
-          <stop offset="0%" stopColor="#c084fc" /> {/* purple-400 */}
-          <stop offset="100%" stopColor="#818cf8" /> {/* indigo-400 */}
+          <stop offset="0%" stopColor="#E0AA3E" /> {/* primary-gold */}
+          <stop offset="100%" stopColor="#D2AC47" /> {/* classic-gold */}
         </linearGradient>
       </defs>
       
@@ -205,7 +205,7 @@ export function VaishnaviTextEffect({
       </motion.g>
 
       {/* Tech accent elements underneath */}
-      <motion.g className="stroke-purple-500 opacity-60">
+      <motion.g className="opacity-60" style={{ stroke: '#E0AA3E' }}>
         <motion.path
           d="M20 220L1050 220"
           strokeWidth="4"
