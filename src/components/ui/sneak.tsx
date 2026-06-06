@@ -19,11 +19,24 @@ export const SneakText = ({ text = "HIRE ME", className = "" }: { text?: string,
     let aspect = containerRef.current.clientWidth / containerRef.current.clientHeight;
     const cameraDistance = 3.5;
 
+    let leftBound = -cameraDistance * aspect;
+    let rightBound = cameraDistance * aspect;
+    let topBound = cameraDistance;
+    let bottomBound = -cameraDistance;
+
+    if (aspect < 1.3) {
+      const targetWidth = cameraDistance * 1.3;
+      leftBound = -targetWidth;
+      rightBound = targetWidth;
+      topBound = targetWidth / aspect;
+      bottomBound = -targetWidth / aspect;
+    }
+
     const camera = new THREE.OrthographicCamera(
-      -cameraDistance * aspect,
-      cameraDistance * aspect,
-      cameraDistance,
-      -cameraDistance,
+      leftBound,
+      rightBound,
+      topBound,
+      bottomBound,
       0.01,
       1000
     );
@@ -181,10 +194,24 @@ export const SneakText = ({ text = "HIRE ME", className = "" }: { text?: string,
     function onWindowResize() {
       if (!containerRef.current || !renderer) return;
       aspect = containerRef.current.clientWidth / containerRef.current.clientHeight;
-      camera.left = -cameraDistance * aspect;
-      camera.right = cameraDistance * aspect;
-      camera.top = cameraDistance;
-      camera.bottom = -cameraDistance;
+      
+      let leftBound = -cameraDistance * aspect;
+      let rightBound = cameraDistance * aspect;
+      let topBound = cameraDistance;
+      let bottomBound = -cameraDistance;
+
+      if (aspect < 1.3) {
+        const targetWidth = cameraDistance * 1.3;
+        leftBound = -targetWidth;
+        rightBound = targetWidth;
+        topBound = targetWidth / aspect;
+        bottomBound = -targetWidth / aspect;
+      }
+
+      camera.left = leftBound;
+      camera.right = rightBound;
+      camera.top = topBound;
+      camera.bottom = bottomBound;
       camera.updateProjectionMatrix();
       renderer.setSize(
         containerRef.current.clientWidth,
@@ -222,6 +249,7 @@ export const SneakText = ({ text = "HIRE ME", className = "" }: { text?: string,
         shaderMaterial.uniforms.uTexture.value.dispose();
       }
       renderer.dispose();
+      renderer.forceContextLoss();
     };
   }, [text]);
 
