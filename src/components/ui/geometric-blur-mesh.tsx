@@ -463,7 +463,7 @@ vec3 render(vec2 st, vec2 mouse) {
                     rotateX(time * 0.7 + (mouse.y - 0.5) * mouseInfluence * 1.0) * 
                     rotateZ(time * 0.1);
     
-    // Single layer with elegant parameters
+    // Single layer with elegant parameters (Reverted back to perfect 0.35 scale)
     float scale = 0.35;
     
     // INVERTED: Hover creates blur effect
@@ -650,7 +650,7 @@ const GeometricBlurMesh: React.FC = () => {
         };
     }, []);
 
-    // Handle resize
+    // Handle resize with ResizeObserver logic to prevent 0x0 size on initial mount
     useEffect(() => {
         const handleResize = () => {
             const canvas = canvasRef.current;
@@ -658,8 +658,8 @@ const GeometricBlurMesh: React.FC = () => {
             if (!canvas || !container) return;
 
             const dpr = Math.min(window.devicePixelRatio, 2);
-            const width = container.clientWidth;
-            const height = container.clientHeight;
+            const width = container.clientWidth || container.getBoundingClientRect().width || 300;
+            const height = container.clientHeight || container.getBoundingClientRect().height || 300;
 
             canvas.width = width * dpr;
             canvas.height = height * dpr;
@@ -672,9 +672,23 @@ const GeometricBlurMesh: React.FC = () => {
             }
         };
 
+        const container = containerRef.current;
+        if (!container) return;
+
+        const resizeObserver = new ResizeObserver(() => {
+            handleResize();
+        });
+        resizeObserver.observe(container);
+
         handleResize();
+        const timer = setTimeout(handleResize, 100);
+
         window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        return () => {
+            resizeObserver.disconnect();
+            clearTimeout(timer);
+            window.removeEventListener('resize', handleResize);
+        };
     }, []);
 
     // Handle mouse move
