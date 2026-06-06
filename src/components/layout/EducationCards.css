@@ -73,7 +73,7 @@
 .edu-card-title {
   font-size: 1.25rem;
   font-weight: 700;
-  color: rgb(218, 244, 237);
+  color: rgb(245, 240, 232);
   text-shadow: -6px 4px 8px rgba(0, 0, 0, 0.5);
   margin-bottom: 0.5rem;
 }
@@ -106,4 +106,117 @@
     opacity: 1;
     transform: translateY(0);
   }
+}
+
+/* ==========================================
+   Mobile 3D Book Layout (Education & Certs)
+   ========================================== */
+
+.mobile-book-wrapper {
+  -webkit-perspective: 1200px;
+  perspective: 1200px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  width: 100%;
+  height: 340px;
+}
+
+.mobile-book {
+  position: relative;
+  border-radius: 12px;
+  width: 240px;
+  height: 300px;
+  background: linear-gradient(135deg, rgba(20, 20, 20, 0.98) 0%, rgba(15, 15, 15, 0.98) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  -webkit-box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+  -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  -webkit-box-pack: stretch;
+  -ms-flex-pack: stretch;
+  justify-content: stretch;
+  color: #fff;
+  -webkit-transition: -webkit-transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: -webkit-transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), -webkit-transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.mobile-book-cover {
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  cursor: pointer;
+  -webkit-transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  -webkit-box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.4);
+  box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.4);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  padding: 1.25rem;
+  box-sizing: border-box;
+  background: linear-gradient(135deg, rgba(25, 25, 25, 0.98) 0%, rgba(10, 10, 10, 1) 100%);
+  border: 1px solid rgba(224, 170, 98, 0.25);
+  z-index: 3;
+  -webkit-transform-origin: 0;
+  -ms-transform-origin: 0;
+  transform-origin: 0;
+}
+
+/* Hover / Active state animations */
+.mobile-book:hover,
+.mobile-book.active {
+  -webkit-transform: rotateZ(-4deg);
+  -ms-transform: rotateZ(-4deg);
+  transform: rotateZ(-4deg);
+}
+
+.mobile-book:hover .mobile-book-cover,
+.mobile-book.active .mobile-book-cover {
+  -webkit-transform: rotateY(-115deg);
+  -ms-transform: rotateY(-115deg);
+  transform: rotateY(-115deg);
+  -webkit-box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
+  box-shadow: 5px 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.mobile-book-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: rgb(245, 240, 232);
+  text-shadow: -3px 3px 6px rgba(0, 0, 0, 0.5);
+  margin-top: 0.5rem;
 }
