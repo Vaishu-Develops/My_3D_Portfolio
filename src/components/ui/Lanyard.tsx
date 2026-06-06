@@ -20,6 +20,24 @@ import './Lanyard.css';
 
 extend({ MeshLineGeometry, MeshLineMaterial });
 
+// Patch MeshLineGeometry to prevent NaN errors from internal bounds calculations
+MeshLineGeometry.prototype.computeBoundingBox = function () {
+  if (!this.boundingBox) {
+    this.boundingBox = new THREE.Box3(
+      new THREE.Vector3(-100, -100, -100),
+      new THREE.Vector3(100, 100, 100)
+    );
+  }
+  return this.boundingBox;
+};
+
+MeshLineGeometry.prototype.computeBoundingSphere = function () {
+  if (!this.boundingSphere) {
+    this.boundingSphere = new THREE.Sphere(new THREE.Vector3(0, 0, 0), 100);
+  }
+  return this.boundingSphere;
+};
+
 declare global {
   namespace JSX {
     interface IntrinsicElements {
@@ -59,7 +77,7 @@ export default function Lanyard({
         onCreated={({ gl }) => gl.setClearColor(new THREE.Color(0x000000), transparent ? 0 : 1)}
       >
         <ambientLight intensity={Math.PI} />
-        <Physics gravity={gravity} timeStep={isMobile ? 1 / 30 : 1 / 60}>
+        <Physics gravity={gravity}>
           <Band isMobile={isMobile} />
         </Physics>
         <Environment blur={0.75}>
@@ -136,8 +154,8 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
 
     // Background Gradient
     const grad = ctx.createLinearGradient(0, 0, 0, 1024);
-    grad.addColorStop(0, '#4c1d95'); // Purple 900
-    grad.addColorStop(1, '#0f172a'); // Slate 950
+    grad.addColorStop(0, '#1a1a1a'); // Dark Grey
+    grad.addColorStop(1, '#0C0C0C'); // Deep Black
     ctx.fillStyle = grad;
     ctx.fillRect(0, 0, 1024, 1024);
 
@@ -150,7 +168,7 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
     }
 
     // Branding "VS"
-    ctx.fillStyle = '#a855f7'; // Purple 500
+    ctx.fillStyle = '#E0AA3E'; // Gold
     ctx.font = 'bold 80px sans-serif';
     ctx.fillText('VS', 40, 120);
 
@@ -159,12 +177,12 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
     ctx.arc(256, 300, 130, 0, Math.PI * 2);
     ctx.fillStyle = 'rgba(255, 255, 255, 0.03)';
     ctx.fill();
-    ctx.strokeStyle = '#2dd4bf'; // Teal 400
+    ctx.strokeStyle = '#E0AA3E'; // Gold
     ctx.lineWidth = 10;
     ctx.stroke();
 
     // Stylized Icon inside profile
-    ctx.fillStyle = '#2dd4bf';
+    ctx.fillStyle = '#E0AA3E'; // Gold
     ctx.font = 'bold 150px serif';
     ctx.textAlign = 'center';
     ctx.fillText('V', 256, 350);
@@ -200,10 +218,10 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
     lCanvas.height = 128;
     const lCtx = lCanvas.getContext('2d')!;
     
-    // Teal-Purple Gradient
+    // Golden Gradient
     const lGrad = lCtx.createLinearGradient(0, 0, 2048, 0);
-    lGrad.addColorStop(0, '#2dd4bf');
-    lGrad.addColorStop(1, '#a855f7');
+    lGrad.addColorStop(0, '#AE8625');
+    lGrad.addColorStop(1, '#E0AA3E');
     lCtx.fillStyle = lGrad;
     lCtx.fillRect(0, 0, 2048, 128);
 
@@ -212,7 +230,7 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
     lCtx.font = 'bold 50px ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace';
     lCtx.textAlign = 'left';
     for(let i=0; i<10; i++) {
-        lCtx.fillText('VAISHNAVI • ENGINEER • DEVELOPER    ', i * 700, 80);
+        lCtx.fillText('VAISHNAVI ΓÇó ENGINEER ΓÇó DEVELOPER    ', i * 700, 80);
     }
 
     const lTex = new THREE.CanvasTexture(lCanvas);
@@ -271,7 +289,7 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
       curve.points[1].copy(j2.current.lerped);
       curve.points[2].copy(j1.current.lerped);
       curve.points[3].copy(fixed.current.translation());
-      band.current.geometry.setPoints(curve.getPoints(isMobile ? 16 : 32));
+      band.current.geometry.setPoints(curve.getPoints(32));
       ang.copy(card.current.angvel());
       rot.copy(card.current.rotation());
       card.current.setAngvel({ x: ang.x, y: ang.y - rot.y * 0.25, z: ang.z });
@@ -284,22 +302,22 @@ function Band({ maxSpeed = 50, minSpeed = 0, isMobile = false }: BandProps) {
     <>
       <group position={[0, 4, 0]}>
         <RigidBody ref={fixed} {...segmentProps} type={'fixed' as RigidBodyProps['type']} />
-        <RigidBody position={[0.5, 0, 0]} ref={j1} {...segmentProps} type={'dynamic' as RigidBodyProps['type']}>
-          <BallCollider args={[0.1]} />
+        <RigidBody position={[0.001, -1, 0]} ref={j1} {...segmentProps} type={'dynamic' as RigidBodyProps['type']}>
+          <BallCollider args={[0.1]} mass={1} />
         </RigidBody>
-        <RigidBody position={[1, 0, 0]} ref={j2} {...segmentProps} type={'dynamic' as RigidBodyProps['type']}>
-          <BallCollider args={[0.1]} />
+        <RigidBody position={[0.002, -2, 0]} ref={j2} {...segmentProps} type={'dynamic' as RigidBodyProps['type']}>
+          <BallCollider args={[0.1]} mass={1} />
         </RigidBody>
-        <RigidBody position={[1.5, 0, 0]} ref={j3} {...segmentProps} type={'dynamic' as RigidBodyProps['type']}>
-          <BallCollider args={[0.1]} />
+        <RigidBody position={[0.003, -3, 0]} ref={j3} {...segmentProps} type={'dynamic' as RigidBodyProps['type']}>
+          <BallCollider args={[0.1]} mass={1} />
         </RigidBody>
         <RigidBody
-          position={[2, 0, 0]}
+          position={[0.004, -4.45, 0]}
           ref={card}
           {...segmentProps}
           type={dragged ? ('kinematicPosition' as RigidBodyProps['type']) : ('dynamic' as RigidBodyProps['type'])}
         >
-          <CuboidCollider args={[0.8, 1.125, 0.01]} />
+          <CuboidCollider args={[0.8, 1.125, 0.01]} mass={1} />
           <group
             scale={2.25}
             position={[0, -1.2, -0.05]}
