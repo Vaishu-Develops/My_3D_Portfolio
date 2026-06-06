@@ -29,6 +29,9 @@ const pageVariants = {
   },
 };
 
+const lanyardPosition: [number, number, number] = [0, 0, 20];
+const lanyardGravity: [number, number, number] = [0, -40, 0];
+
 export default function HireMe() {
   return (
     <motion.div
@@ -39,13 +42,13 @@ export default function HireMe() {
       className="w-full min-h-screen relative"
     >
       {/* 3D Lanyard Card Overlay */}
-      <Lanyard position={[0, 0, 20]} gravity={[0, -40, 0]} />
+      <Lanyard position={lanyardPosition} gravity={lanyardGravity} />
 
       {/* Isolated LightRays background for Hire Me Page */}
-      <div className="fixed inset-0 -z-10 bg-slate-950">
+      <div className="fixed inset-0 -z-10 bg-[#0C0C0C]">
         <LightRays
           raysOrigin="top-center"
-          raysColor="#4fd1c5" // Teal tint to match portfolio theme
+          raysColor="#E0AA3E" // Golden
           raysSpeed={1.5}
           lightSpread={0.5}
           rayLength={3}
