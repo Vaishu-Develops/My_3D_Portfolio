@@ -6,6 +6,7 @@
   height: 100vh;
   z-index: 50; /* Above the background components but below standard UI elements like modals if needed */
   pointer-events: auto; /* Required to grab the lanyard */
+  touch-action: none; /* Disables browser-default touch gestures, enabling buttery smooth touch dragging */
 }
 
 /* Fix for cursor dragging */
