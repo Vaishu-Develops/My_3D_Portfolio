@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { gsap } from "gsap"
 import type React from "react"
 
@@ -31,16 +31,26 @@ export function LayeredText({
 }: LayeredTextProps) {
   const containerRef = useRef<HTMLDivElement>(null)
   const timelineRef = useRef<gsap.core.Timeline | null>(null)
+  const [isMobile, setIsMobile] = useState(false)
 
   const calculateTranslateX = (index: number) => {
     const baseOffset = 35
-    const baseOffsetMd = 20
+    const baseOffsetMd = 15
     const centerIndex = Math.floor(lines.length / 2)
     return {
       desktop: (index - centerIndex) * baseOffset,
       mobile: (index - centerIndex) * baseOffsetMd,
     }
   }
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
+  }, [])
 
   useEffect(() => {
     if (!containerRef.current) return
@@ -51,7 +61,7 @@ export function LayeredText({
     timelineRef.current = gsap.timeline({ paused: true })
 
     timelineRef.current.to(paragraphs, {
-      y: window.innerWidth >= 768 ? -60 : -35,
+      y: isMobile ? -lineHeightMd : -lineHeight,
       duration: 0.8,
       ease: "power2.out",
       stagger: 0.08,
@@ -73,17 +83,21 @@ export function LayeredText({
       container.removeEventListener("mouseleave", handleMouseLeave)
       timelineRef.current?.kill()
     }
-  }, [lines])
+  }, [lines, isMobile, lineHeight, lineHeightMd])
+
+  const activeFontSize = isMobile ? fontSizeMd : fontSize
+  const activeLineHeight = isMobile ? lineHeightMd : lineHeight
 
   return (
     <div
       ref={containerRef}
       className={`mx-auto py-12 font-sans font-black tracking-[-2px] uppercase text-black dark:text-white antialiased cursor-pointer ${className}`}
-      style={{ fontSize, "--md-font-size": fontSizeMd } as React.CSSProperties}
+      style={{ fontSize: activeFontSize } as React.CSSProperties}
     >
       <ul className="list-none p-0 m-0 flex flex-col items-center">
         {lines.map((line, index) => {
           const translateX = calculateTranslateX(index)
+          const activeTranslateX = isMobile ? translateX.mobile : translateX.desktop
           return (
             <li
               key={index}
@@ -97,30 +111,28 @@ export function LayeredText({
               `}
               style={
                 {
-                  height: `${lineHeight}px`,
-                  transform: `translateX(${translateX.desktop}px) skew(${index % 2 === 0 ? "60deg, -30deg" : "0deg, -30deg"}) scaleY(${index % 2 === 0 ? "0.66667" : "1.33333"})`,
-                  "--md-height": `${lineHeightMd}px`,
-                  "--md-translateX": `${translateX.mobile}px`,
+                  height: `${activeLineHeight}px`,
+                  transform: `translateX(${activeTranslateX}px) skew(${index % 2 === 0 ? "60deg, -30deg" : "0deg, -30deg"}) scaleY(${index % 2 === 0 ? "0.66667" : "1.33333"})`,
                 } as React.CSSProperties
               }
             >
               <p
-                className="leading-[55px] md:leading-[30px] px-[15px] align-top whitespace-nowrap m-0"
+                className="px-[15px] align-top whitespace-nowrap m-0"
                 style={
                   {
-                    height: `${lineHeight}px`,
-                    lineHeight: `${lineHeight - 5}px`,
+                    height: `${activeLineHeight}px`,
+                    lineHeight: `${activeLineHeight - 5}px`,
                   } as React.CSSProperties
                 }
               >
                 {line.top}
               </p>
               <p
-                className="leading-[55px] md:leading-[30px] px-[15px] align-top whitespace-nowrap m-0"
+                className="px-[15px] align-top whitespace-nowrap m-0"
                 style={
                   {
-                    height: `${lineHeight}px`,
-                    lineHeight: `${lineHeight - 5}px`,
+                    height: `${activeLineHeight}px`,
+                    lineHeight: `${activeLineHeight - 5}px`,
                   } as React.CSSProperties
                 }
               >
