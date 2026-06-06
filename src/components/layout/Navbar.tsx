@@ -2,6 +2,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { gsap } from 'gsap';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const items = [
   { label: 'Home', href: '#hero' },
@@ -28,9 +29,9 @@ export default function Navbar() {
   const isHome = location.pathname === '/';
 
   const ease = 'power3.easeOut';
-  const baseColor = '#0a0a0a';
-  const pillColor = '#1a1a2e';
-  const hoveredPillTextColor = '#a855f7';
+  const baseColor = '#0C0C0C';
+  const pillColor = '#1a1a14';
+  const hoveredPillTextColor = '#E0AA3E';
   const pillTextColor = '#e5e5e5';
 
   const handleNavClick = (e, href) => {
@@ -151,11 +152,23 @@ export default function Navbar() {
     if (menu) {
       if (newState) {
         gsap.set(menu, { visibility: 'visible' });
-        gsap.fromTo(menu, { opacity: 0, y: 10 }, { opacity: 1, y: 0, duration: 0.3, ease, transformOrigin: 'top center' });
+        gsap.fromTo(menu, 
+          { opacity: 0, y: -20, scaleY: 0.8 }, 
+          { opacity: 1, y: 0, scaleY: 1, duration: 0.45, ease: "back.out(1.5)", transformOrigin: 'top center' }
+        );
       } else {
-        gsap.to(menu, { opacity: 0, y: 10, duration: 0.2, ease, transformOrigin: 'top center', onComplete: () => gsap.set(menu, { visibility: 'hidden' }) });
+        gsap.to(menu, { 
+          opacity: 0, 
+          y: -15, 
+          scaleY: 0.85, 
+          duration: 0.25, 
+          ease: "power2.in", 
+          transformOrigin: 'top center', 
+          onComplete: () => gsap.set(menu, { visibility: 'hidden' }) 
+        });
       }
     }
+
   };
 
   const cssVars = {
@@ -190,14 +203,14 @@ export default function Navbar() {
             <defs>
               {/* Main gradient — purple → indigo */}
               <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#a855f7" />
-                <stop offset="50%" stopColor="#6366f1" />
-                <stop offset="100%" stopColor="#2dd4bf" />
+                <stop offset="0%" stopColor="#E0AA3E" />
+                <stop offset="50%" stopColor="#D2AC47" />
+                <stop offset="100%" stopColor="#AE8625" />
               </linearGradient>
               {/* Shimmer ring gradient */}
               <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#a855f7" stopOpacity="0.7" />
-                <stop offset="100%" stopColor="#2dd4bf" stopOpacity="0.1" />
+                <stop offset="0%" stopColor="#E0AA3E" stopOpacity="0.7" />
+                <stop offset="100%" stopColor="#AE8625" stopOpacity="0.1" />
               </linearGradient>
               {/* Glow filter */}
               <filter id="logoGlow" x="-30%" y="-30%" width="160%" height="160%">
@@ -256,7 +269,7 @@ export default function Navbar() {
           {/* Hover glow ring */}
           <span
             className="absolute inset-0 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
-            style={{ boxShadow: '0 0 0 1px rgba(168,85,247,0.4), 0 0 16px 4px rgba(99,102,241,0.25)' }}
+            style={{ boxShadow: '0 0 0 1px rgba(224,170,62,0.4), 0 0 16px 4px rgba(174,134,37,0.25)' }}
           />
         </button>
 
@@ -301,11 +314,11 @@ export default function Navbar() {
                 onClick={(e) => { e.preventDefault(); navigate('/hire-me'); }}
                 className={basePillClasses}
                 style={{
-                  background: '#1a0d1a',
-                  color: '#fb923c',
+                  background: 'linear-gradient(135deg, #E0AA3E 0%, #AE8625 100%)',
+                  color: '#0C0C0C',
                   paddingLeft: '18px',
                   paddingRight: '18px',
-                  border: '1px solid rgba(251,146,60,0.35)',
+                  border: 'none',
                 }}
                 aria-label="Hire Me"
                 onMouseEnter={() => handleEnter(items.length)}
@@ -314,15 +327,15 @@ export default function Navbar() {
                 <span
                   className="hover-circle absolute left-1/2 bottom-0 rounded-full z-[1] block pointer-events-none"
                   style={{
-                    background: 'linear-gradient(135deg, #f97316 0%, #ec4899 100%)',
+                    background: '#1a1508',
                     willChange: 'transform',
                   }}
                   aria-hidden="true"
                   ref={(el) => { circleRefs.current[items.length] = el; }}
                 />
                 <span className="label-stack relative inline-block leading-[1] z-[2]">
-                  <span className="pill-label relative z-[2] inline-block leading-[1] font-bold" style={{ color: '#fb923c', willChange: 'transform' }}>Hire Me</span>
-                  <span className="pill-label-hover absolute left-0 top-0 z-[3] inline-block font-bold" style={{ color: '#fff', willChange: 'transform, opacity' }} aria-hidden="true">Hire Me</span>
+                  <span className="pill-label relative z-[2] inline-block leading-[1] font-bold" style={{ color: '#0C0C0C', willChange: 'transform' }}>Hire Me</span>
+                  <span className="pill-label-hover absolute left-0 top-0 z-[3] inline-block font-bold" style={{ color: '#E0AA3E', willChange: 'transform, opacity' }} aria-hidden="true">Hire Me</span>
                 </span>
               </button>
             </li>
@@ -345,19 +358,24 @@ export default function Navbar() {
         </button>
       </nav>
 
-      {/* Mobile Menu */}
+      {/* Mobile Menu (Glassmorphism & spring styling) */}
       <div
         ref={mobileMenuRef}
-        className="md:hidden absolute top-[3.5em] left-4 right-4 rounded-[27px] shadow-[0_8px_32px_rgba(0,0,0,0.12)] z-[998] origin-top"
-        style={{ ...cssVars, background: 'var(--base, #f0f0f0)' }}
+        className="md:hidden absolute top-[3.5em] left-4 right-4 rounded-[27px] shadow-[0_8px_32px_rgba(0,0,0,0.4)] z-[998] origin-top border border-white/10"
+        style={{ 
+          ...cssVars, 
+          background: 'rgba(10, 10, 10, 0.75)', 
+          backdropFilter: 'blur(20px)',
+          WebkitBackdropFilter: 'blur(20px)'
+        }}
       >
-        <ul className="list-none m-0 p-[3px] flex flex-col gap-[3px]">
+        <ul className="list-none m-0 p-[6px] flex flex-col gap-[4px]">
           {items.map(item => (
             <li key={item.href}>
               <a
                 href={item.href}
-                className="block py-3 px-4 text-[14px] font-medium rounded-[50px] transition-all duration-200"
-                style={{ background: 'var(--pill-bg, #fff)', color: 'var(--pill-text, #fff)' }}
+                className="block py-3 px-4 text-[14px] font-medium rounded-[50px] transition-all duration-200 hover:bg-white/10 border border-white/5"
+                style={{ background: 'rgba(255, 255, 255, 0.04)', color: '#e5e5e5' }}
                 onClick={(e) => { setIsMobileMenuOpen(false); handleNavClick(e, item.href); }}
               >
                 {item.label}
@@ -367,7 +385,7 @@ export default function Navbar() {
           <li>
             <button
                className="block w-full py-3 px-4 text-[14px] font-bold rounded-[50px] transition-all duration-200 text-left"
-               style={{ background: 'linear-gradient(90deg, #2dd4bf 0%, #a855f7 100%)', color: '#fff', border: 'none' }}
+               style={{ background: 'linear-gradient(90deg, #AE8625 0%, #E0AA3E 100%)', color: '#fff', border: 'none' }}
                onClick={() => { setIsMobileMenuOpen(false); navigate('/hire-me'); }}
             >
               Hire Me
