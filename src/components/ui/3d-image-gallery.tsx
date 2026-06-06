@@ -130,6 +130,7 @@ function StarfieldBackground() {
         mountRef.current.removeChild(renderer.domElement)
       }
       renderer.dispose()
+      renderer.forceContextLoss()
       starsGeometry.dispose()
       starsMaterial.dispose()
     }
