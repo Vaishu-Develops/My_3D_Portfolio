@@ -2,21 +2,21 @@
   <defs>
     <!-- Dark background circle -->
     <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#0f0f1a"/>
-      <stop offset="100%" stop-color="#06060f"/>
+      <stop offset="0%" stop-color="#1a1508"/>
+      <stop offset="100%" stop-color="#0C0C0C"/>
     </radialGradient>
 
-    <!-- Main purple→indigo→teal gradient -->
+    <!-- Main golden gradient -->
     <linearGradient id="logoGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%"   stop-color="#a855f7"/>
-      <stop offset="50%"  stop-color="#6366f1"/>
-      <stop offset="100%" stop-color="#2dd4bf"/>
+      <stop offset="0%"   stop-color="#E0AA3E"/>
+      <stop offset="50%"  stop-color="#D2AC47"/>
+      <stop offset="100%" stop-color="#AE8625"/>
     </linearGradient>
 
     <!-- Spinner arc gradient -->
     <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%"   stop-color="#a855f7" stop-opacity="0.9"/>
-      <stop offset="100%" stop-color="#2dd4bf" stop-opacity="0.1"/>
+      <stop offset="0%"   stop-color="#E0AA3E" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#AE8625" stop-opacity="0.1"/>
     </linearGradient>
 
     <!-- Glow filter for the V path -->
