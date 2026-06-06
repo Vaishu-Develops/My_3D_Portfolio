@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import CSSStars from '../components/ui/CSSStars';
-import AtmosphereLayer from '../components/ui/AtmosphereLayer';
+// import AtmosphereLayer from '../components/ui/AtmosphereLayer';
 import HeroSection from '../components/layout/HeroSection';
 import AboutSection from '../components/layout/AboutSection';
 import ExperienceSection from '../components/layout/ExperienceSection';
@@ -9,6 +9,7 @@ import ProjectsSection from '../components/layout/ProjectsSection';
 import GallerySection from '../components/layout/GallerySection';
 import EducationSection from '../components/layout/EducationSection';
 import ScrollStack, { ScrollStackItem } from '../components/ui/ScrollStack';
+
 
 const pageVariants = {
   initial: {
@@ -43,13 +44,14 @@ export default function Home() {
       initial="initial"
       animate="animate"
       exit="exit"
-      className="w-full min-h-screen relative"
+      className="w-full min-h-screen"
+      style={{ position: 'relative' }}
     >
-      {/* Pure-CSS starfield — no WebGL context, no dome artifact */}
+      {/* Pure-CSS starfield background */}
       <CSSStars />
 
-      {/* Atmospheric Background glow layers synced with scroll */}
-      <AtmosphereLayer />
+      {/* Atmospheric Background glow layers synced with scroll (Disabled for solid deep black) */}
+      {/* <AtmosphereLayer /> */}
 
       {/* Main Content with ScrollStack smooth scroll */}
       <ScrollStack useWindowScroll={true}>
@@ -69,7 +71,9 @@ export default function Home() {
           <SkillsSection />
         </ScrollStackItem>
 
-        <ProjectsSection />
+        <ScrollStackItem>
+          <ProjectsSection />
+        </ScrollStackItem>
 
         <ScrollStackItem>
           <GallerySection />
