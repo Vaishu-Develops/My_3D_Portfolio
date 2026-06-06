@@ -40,6 +40,8 @@ const AnimatedChar = ({
   const isSpace = char === " ";
   const distanceFromCenter = index - centerIndex;
 
+  const isReduced = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
   const x = useTransform(scrollYProgress, [0, 0.45], [distanceFromCenter * 30, 0], { clamp: true });
   const rotateX = useTransform(scrollYProgress, [0, 0.45], [distanceFromCenter * 25, 0], { clamp: true });
   const opacity = useTransform(scrollYProgress, [0, 0.35], [0, 1], { clamp: true });
@@ -53,7 +55,11 @@ const AnimatedChar = ({
           ? `inline-block text-transparent bg-clip-text bg-gradient-to-r ${gradient}`
           : "inline-block text-white"
       }
-      style={{ x, rotateX, opacity }}
+      style={{ 
+        x: isReduced ? 0 : x, 
+        rotateX: isReduced ? 0 : rotateX, 
+        opacity: isReduced ? 1 : opacity 
+      }}
     >
       {isSpace ? "\u00A0" : char}
     </motion.span>
@@ -99,7 +105,7 @@ export function ScrollRevealHeading({
   const alignClass = align === "center" ? "text-center" : "text-left";
 
   return (
-    <div ref={containerRef} className={`${className}`}>
+    <div ref={containerRef} className={`relative ${className}`}>
       <h2
         className={`text-4xl sm:text-5xl md:text-7xl font-bold tracking-tighter ${alignClass}`}
         style={{ perspective: "600px" }}
@@ -120,7 +126,9 @@ export function ScrollRevealHeading({
         <motion.p
           className={`text-neutral-400 mt-4 text-lg ${alignClass}`}
           style={{
-            opacity: useTransform(scrollYProgress, [0, 0.35], [0, 1], { clamp: true }),
+            opacity: typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+              ? 1
+              : useTransform(scrollYProgress, [0, 0.35], [0, 1], { clamp: true }),
           }}
         >
           {subtitle}
