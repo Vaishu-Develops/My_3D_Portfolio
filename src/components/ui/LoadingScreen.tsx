@@ -8,8 +8,17 @@ const Lottie = (LottieDefault as any).default || LottieDefault;
 export default function LoadingScreen() {
   const [visible, setVisible] = useState(true);
   const [stage, setStage] = useState<'loading' | 'welcome' | 'fadeOut'>('loading');
+  const [fontSize, setFontSize] = useState("120px");
 
   useEffect(() => {
+    const handleResize = () => {
+      const size = Math.max(40, Math.min(120, Math.floor(window.innerWidth / 7.5)));
+      setFontSize(`${size}px`);
+    };
+
+    handleResize();
+    window.addEventListener('resize', handleResize);
+
     // Stage 1: Standard loading (2.5s)
     const loadTimer = setTimeout(() => {
       setStage('welcome');
@@ -27,6 +36,7 @@ export default function LoadingScreen() {
     }, 8000);
 
     return () => {
+      window.removeEventListener('resize', handleResize);
       clearTimeout(loadTimer);
       clearTimeout(welcomeTimer);
       clearTimeout(hideTimer);
@@ -54,7 +64,7 @@ export default function LoadingScreen() {
             texts={["WELCOME"]}
             font={{
               fontFamily: "Inter, sans-serif",
-              fontSize: "120px",
+              fontSize: fontSize,
               fontWeight: 900
             }}
             color="rgb(255, 255, 255)"
