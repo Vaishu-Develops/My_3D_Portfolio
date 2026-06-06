@@ -23,6 +23,61 @@ export const CardContainer = ({
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [isMouseEntered, setIsMouseEntered] = useState(false);
+  const hasOrientationData = useRef(false);
+
+  useEffect(() => {
+    // Check if touch device
+    const isTouch = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0);
+    const isReducedMotion = typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    
+    if (!isTouch || isReducedMotion) return;
+
+    // Force 3D layered depth active on touch devices
+    setIsMouseEntered(true);
+
+    const handleOrientation = (e: DeviceOrientationEvent) => {
+      if (e.beta === null || e.gamma === null) return;
+      hasOrientationData.current = true;
+      
+      // Standard mobile viewing angle is ~45deg pitch
+      const tiltX = Math.min(Math.max((e.beta - 45) * 0.4, -12), 12);
+      const tiltY = Math.min(Math.max(e.gamma * 0.4, -12), 12);
+      
+      if (containerRef.current) {
+        containerRef.current.style.transform = `rotateY(${tiltY}deg) rotateX(${-tiltX}deg)`;
+      }
+    };
+
+    window.addEventListener('deviceorientation', handleOrientation);
+
+    // Fallback float animation loop
+    let floatFrame: number;
+    let angle = 0;
+    const animateFloat = () => {
+      if (hasOrientationData.current) return;
+      angle += 0.02;
+      const rotateY = Math.sin(angle) * 5;
+      const rotateX = Math.cos(angle * 1.5) * 3;
+      
+      if (containerRef.current) {
+        containerRef.current.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+      }
+      floatFrame = requestAnimationFrame(animateFloat);
+    };
+
+    // Delay start of float to let page stabilize
+    const timeoutId = setTimeout(() => {
+      if (!hasOrientationData.current) {
+        animateFloat();
+      }
+    }, 1000);
+
+    return () => {
+      window.removeEventListener('deviceorientation', handleOrientation);
+      clearTimeout(timeoutId);
+      if (floatFrame) cancelAnimationFrame(floatFrame);
+    };
+  }, []);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
