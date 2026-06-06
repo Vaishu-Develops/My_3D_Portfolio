@@ -138,6 +138,7 @@ export function WaveAnimation({
            container.removeChild(rendererRef.current.domElement)
         }
         rendererRef.current.dispose()
+        rendererRef.current.forceContextLoss()
       }
       geo.dispose()
       mat.dispose()
