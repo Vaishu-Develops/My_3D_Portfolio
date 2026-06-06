@@ -393,8 +393,13 @@ export const GlobalSpotlight: React.FC<{
     document.body.appendChild(spotlight);
     spotlightRef.current = spotlight;
 
+    const isTouch = typeof window !== 'undefined' && ('ontouchstart' in window || navigator.maxTouchPoints > 0 || window.innerWidth < 768);
+
+    let animationFrameId: number;
+    let angle = 0;
+
     const handleMouseMove = (e: MouseEvent) => {
-      if (!spotlightRef.current || !gridRef.current) return;
+      if (isTouch || !spotlightRef.current || !gridRef.current) return;
 
       const section = gridRef.current.closest('.bento-section');
       const rect = section?.getBoundingClientRect();
@@ -462,6 +467,7 @@ export const GlobalSpotlight: React.FC<{
     };
 
     const handleMouseLeave = () => {
+      if (isTouch) return;
       isInsideSection.current = false;
       gridRef.current?.querySelectorAll('.magic-bento-card').forEach(card => {
         (card as HTMLElement).style.setProperty('--glow-intensity', '0');
@@ -475,12 +481,70 @@ export const GlobalSpotlight: React.FC<{
       }
     };
 
-    document.addEventListener('mousemove', handleMouseMove);
-    document.addEventListener('mouseleave', handleMouseLeave);
+    // Auto-shifting spotlight loop for touch devices
+    const animateSpotlight = () => {
+      if (!spotlightRef.current || !gridRef.current) return;
+      const gridRect = gridRef.current.getBoundingClientRect();
+      
+      // Stop animating if the section is not in view to save GPU cycles
+      if (gridRect.bottom < 0 || gridRect.top > window.innerHeight) {
+        gsap.set(spotlightRef.current, { opacity: 0 });
+        animationFrameId = requestAnimationFrame(animateSpotlight);
+        return;
+      }
+
+      angle += 0.006; // Slow drift
+
+      const cx = gridRect.left + gridRect.width / 2;
+      const cy = gridRect.top + gridRect.height / 2;
+      
+      const x = cx + Math.cos(angle) * (gridRect.width * 0.25);
+      const y = cy + Math.sin(angle * 1.5) * (gridRect.height * 0.15);
+
+      gsap.set(spotlightRef.current, {
+        left: x,
+        top: y,
+        opacity: 0.45 + Math.sin(angle * 2) * 0.15 // Pulsing brightness
+      });
+
+      const cards = gridRef.current.querySelectorAll('.magic-bento-card');
+      const { proximity, fadeDistance } = calculateSpotlightValues(spotlightRadius);
+
+      cards.forEach(card => {
+        const cardElement = card as HTMLElement;
+        const cardRect = cardElement.getBoundingClientRect();
+        const cardCenterX = cardRect.left + cardRect.width / 2;
+        const cardCenterY = cardRect.top + cardRect.height / 2;
+        const distance = Math.hypot(x - cardCenterX, y - cardCenterY) - Math.max(cardRect.width, cardRect.height) / 2;
+        const effectiveDistance = Math.max(0, distance);
+
+        let glowIntensity = 0;
+        if (effectiveDistance <= proximity) {
+          glowIntensity = 1;
+        } else if (effectiveDistance <= fadeDistance) {
+          glowIntensity = (fadeDistance - effectiveDistance) / (fadeDistance - proximity);
+        }
+
+        updateCardGlowProperties(cardElement, x, y, glowIntensity, spotlightRadius);
+      });
+
+      animationFrameId = requestAnimationFrame(animateSpotlight);
+    };
+
+    if (isTouch) {
+      animateSpotlight();
+    } else {
+      document.addEventListener('mousemove', handleMouseMove);
+      document.addEventListener('mouseleave', handleMouseLeave);
+    }
 
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseleave', handleMouseLeave);
+      if (isTouch) {
+        cancelAnimationFrame(animationFrameId);
+      } else {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseleave', handleMouseLeave);
+      }
       spotlightRef.current?.parentNode?.removeChild(spotlightRef.current);
     };
   }, [gridRef, disableAnimations, enabled, spotlightRadius, glowColor]);
