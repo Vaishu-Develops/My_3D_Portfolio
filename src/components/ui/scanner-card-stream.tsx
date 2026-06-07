@@ -7,7 +7,7 @@ import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import * as THREE from 'three';
 
 // --- GitHub Projects Data ---
-const projectsData = [
+export const projectsData = [
   {
     title: 'SarpGuard',
     tag: 'AI Security',
@@ -234,6 +234,7 @@ const ScannerCardStream = ({
     const curCardHeight = mobile ? 200 : 250;
     const curCardGap = mobile ? 24 : cardGap;
     const curScannerRatio = mobile ? 0.1 : 0.2;
+    let parentWidth = cardLine.parentElement?.offsetWidth || window.innerWidth;
 
     // --- (SETUP LOGIC for Three.js, Canvas, etc.) ---
     const scene = new THREE.Scene();
@@ -242,7 +243,9 @@ const ScannerCardStream = ({
     const renderer = new THREE.WebGLRenderer({ canvas: particleCanvas, alpha: true, antialias: true });
     renderer.setSize(window.innerWidth, curCardHeight);
     renderer.setClearColor(0x000000, 0);
-    const particleCount = 400;
+    
+    // Scale background particles on mobile
+    const particleCount = mobile ? 120 : 400;
     const geometry = new THREE.BufferGeometry();
     const positions = new Float32Array(particleCount * 3);
     const velocities = new Float32Array(particleCount);
@@ -280,20 +283,16 @@ const ScannerCardStream = ({
     scannerCanvas.width = window.innerWidth;
     scannerCanvas.height = curCardHeight;
     let scannerParticles: any[] = [];
-    const baseMaxParticles = 800;
+    
+    // Scale scanner particles on mobile
+    const baseMaxParticles = mobile ? 150 : 800;
     let currentMaxParticles = baseMaxParticles;
-    const scanTargetMaxParticles = 2500;
+    const scanTargetMaxParticles = mobile ? 450 : 2500;
 
     const createScannerParticle = () => {
       const mob = window.innerWidth < 768;
       const activeH = mob ? 200 : 250;
-      let scannerX = window.innerWidth * (mob ? 0.1 : 0.2);
-      
-      if (scannerLineRef.current && scannerCanvasRef.current) {
-        const lineRect = scannerLineRef.current.getBoundingClientRect();
-        const canvasRect = scannerCanvasRef.current.getBoundingClientRect();
-        scannerX = lineRect.left - canvasRect.left + lineRect.width / 2;
-      }
+      const scannerX = parentWidth * (mob ? 0.1 : 0.2);
       
       return {
         x: scannerX + (Math.random() - 0.5) * 4,
@@ -327,33 +326,49 @@ const ScannerCardStream = ({
     };
 
     const updateCardEffects = () => {
-      if (!scannerLineRef.current) return;
-      const lineRect = scannerLineRef.current.getBoundingClientRect();
-      const scannerX = lineRect.left + lineRect.width / 2;
+      const mob = window.innerWidth < 768;
+      const curCardWidth = mob ? 320 : 400;
+      const curCardGap = mob ? 24 : cardGap;
+      const scannerX = parentWidth * (mob ? 0.1 : 0.2);
       
+      const pos = cardStreamState.current.position;
       let anyCardIsScanning = false;
-      cardLine.querySelectorAll<HTMLElement>(".card-wrapper").forEach((wrapper, index) => {
-        const rect = wrapper.getBoundingClientRect();
-        const normalCard = wrapper.querySelector<HTMLElement>(".card-normal")!;
-        const asciiCard = wrapper.querySelector<HTMLElement>(".card-ascii")!;
-        const asciiContent = asciiCard.querySelector<HTMLElement>('pre')!;
+      
+      const children = cardLine.children;
+      const len = children.length;
+      for (let index = 0; index < len; index++) {
+        const wrapper = children[index] as HTMLElement;
+        if (!wrapper) continue;
         
-        const isCrossing = rect.left < scannerX && rect.right > scannerX;
+        const cardLeft = pos + index * (curCardWidth + curCardGap);
+        const cardRight = cardLeft + curCardWidth;
+        
+        const isCrossing = cardLeft < scannerX && cardRight > scannerX;
+        
         if (isCrossing) {
           anyCardIsScanning = true;
           if (scanEffect === 'scramble' && wrapper.dataset.scanned !== 'true') {
+            const asciiCard = wrapper.children[1] as HTMLElement;
+            const asciiContent = asciiCard?.children[0] as HTMLElement;
+            if (asciiContent) {
               runScrambleEffect(asciiContent, index);
+            }
           }
           wrapper.dataset.scanned = 'true';
         } else {
           delete wrapper.dataset.scanned;
         }
 
-        const intersectX = Math.max(0, Math.min(rect.width, scannerX - rect.left));
-        const pct = (intersectX / rect.width) * 100;
-        normalCard.style.clipPath = `inset(0 0 0 ${pct}%)`;
-        asciiCard.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
-      });
+        const intersectX = Math.max(0, Math.min(curCardWidth, scannerX - cardLeft));
+        const pct = (intersectX / curCardWidth) * 100;
+        
+        const normalCard = wrapper.children[0] as HTMLElement;
+        const asciiCard = wrapper.children[1] as HTMLElement;
+        
+        const radius = window.innerWidth < 640 ? '16px' : '24px';
+        if (normalCard) normalCard.style.clipPath = `inset(0 0 0 ${pct}% round 0 ${radius} ${radius} 0)`;
+        if (asciiCard) asciiCard.style.clipPath = `inset(0 ${100 - pct}% 0 0 round ${radius} 0 0 ${radius})`;
+      }
       // Update state for scanner visibility
       setIsScanning(anyCardIsScanning);
       scannerState.current.isScanning = anyCardIsScanning;
@@ -396,6 +411,7 @@ const ScannerCardStream = ({
       const parent = cardLine.parentElement;
       if (!parent) return;
       const rect = parent.getBoundingClientRect();
+      parentWidth = rect.width;
       const mob = window.innerWidth < 768;
       const activeH = mob ? 200 : 250;
       
@@ -611,7 +627,7 @@ const ScannerCardStream = ({
 
               {/* Scrambled ASCII representation (Visible when unscanned / left of scanner line) */}
               <div 
-                className="card-ascii card absolute top-0 left-0 w-full h-full rounded-[16px] sm:rounded-[24px] overflow-hidden bg-black/45 border border-white/5 z-[1]"
+                className="card-ascii absolute top-0 left-0 w-full h-full rounded-[16px] sm:rounded-[24px] overflow-hidden z-[1]"
                 style={{
                   clipPath: 'inset(0 100% 0 0)',
                 }}
