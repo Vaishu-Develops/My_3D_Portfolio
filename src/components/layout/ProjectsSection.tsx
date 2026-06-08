@@ -29,7 +29,7 @@ class ErrorBoundary extends React.Component<
 
 export default function ProjectsSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { margin: '200px', once: true });
+  const isInView = useInView(sectionRef, { margin: '200px', once: false });
   const [webglAvailable, setWebglAvailable] = useState(true);
 
   useEffect(() => {
