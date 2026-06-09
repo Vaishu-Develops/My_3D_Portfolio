@@ -25,14 +25,15 @@ const ScrollStack = ({ children, className = '', useWindowScroll = true }: { chi
   const lenisRef = useRef<any>(null);
 
   const setupLenis = useCallback(() => {
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
     const lenis = new Lenis({
       duration: 1.2,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
+      smoothWheel: !isMobile,
       touchMultiplier: 2,
       infinite: false,
       lerp: 0.1,
-      syncTouch: true,
+      syncTouch: false, // Prevent scroll hijacking/hanging on touch devices
       syncTouchLerp: 0.075
     });
 
