@@ -351,18 +351,19 @@ export default function ExperienceSection() {
 
     const absDiff = Math.abs(diff);
 
-    // Hide cards that are far away
-    if (absDiff > 2) {
+    // Hide cards that are far away (more than 1 card away)
+    if (absDiff > 1) {
       return {
-        x: diff * 200,
-        y: 120,
-        z: -300,
-        rotateY: diff * -45,
-        rotateX: -30,
-        scale: 0.6,
+        x: diff * 190,
+        y: 80,
+        z: -150,
+        rotateY: diff * -35,
+        rotateX: -20,
+        scale: 0.82,
         opacity: 0,
         zIndex: 0,
         pointerEvents: 'none' as const,
+        display: 'none' as const,
       };
     }
 
@@ -378,6 +379,7 @@ export default function ExperienceSection() {
         opacity: 1,
         zIndex: 20,
         pointerEvents: 'auto' as const,
+        display: 'block' as const,
       };
     }
 
@@ -401,6 +403,7 @@ export default function ExperienceSection() {
       opacity: 0,
       zIndex: 10 - absDiff,
       pointerEvents: 'none' as const,
+      display: 'block' as const,
     };
   };
 
@@ -505,7 +508,7 @@ export default function ExperienceSection() {
                       handleNext();
                     }
                   }}
-                  className={`absolute w-full max-w-[290px] sm:max-w-[320px] select-none ${isActive ? 'cursor-grab active:cursor-grabbing' : 'cursor-pointer'}`}
+                  className={`absolute w-full max-w-[290px] sm:max-w-[320px] select-none touch-pan-y ${isActive ? 'cursor-grab active:cursor-grabbing' : 'cursor-pointer'}`}
                   animate={{
                     x: styles.x,
                     y: styles.y,
@@ -526,6 +529,7 @@ export default function ExperienceSection() {
                     pointerEvents: styles.pointerEvents,
                     transformStyle: 'preserve-3d',
                     WebkitTransformStyle: 'preserve-3d',
+                    display: styles.display,
                   }}
                 >
                   <FlipCard 
