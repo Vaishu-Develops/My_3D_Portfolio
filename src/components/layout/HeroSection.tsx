@@ -1,5 +1,5 @@
-import React, { Suspense, useState, useEffect, useRef } from 'react';
-import { motion, useInView } from 'framer-motion';
+import React, { Suspense, useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 import { ArrowRight, MapPin } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import LottieDefault from 'lottie-react';
@@ -40,8 +40,6 @@ class ErrorBoundary extends React.Component<
 export default function HeroSection() {
   const [isMobile, setIsMobile] = useState(false);
   const [webglAvailable, setWebglAvailable] = useState(true);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(containerRef, { margin: '200px', once: true });
 
   useEffect(() => {
     const checkMobile = () => setIsMobile(window.innerWidth < 768);
@@ -137,7 +135,6 @@ export default function HeroSection() {
 
         {/* Right Content - Spline 3D Scene */}
         <motion.div
-          ref={containerRef}
           className="relative z-30 w-full lg:w-1/2 h-[280px] sm:h-[420px] lg:h-[800px] flex items-center justify-center"
           initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -168,16 +165,10 @@ export default function HeroSection() {
                     </p>
                   </div>
                 }>
-                  {isInView ? (
                     <Spline
                       scene="/scene.splinecode"
                       style={{ width: '100%', height: '100%', border: 'none', background: 'transparent' }}
                     />
-                  ) : (
-                    <div className="w-full h-full flex items-center justify-center">
-                      <div className="w-8 h-8 rounded-full border-2 border-[#E0AA3E] border-t-transparent animate-spin" />
-                    </div>
-                  )}
                 </ErrorBoundary>
               </Suspense>
             )}
