@@ -61,7 +61,8 @@ export const WovenCanvas = () => {
     const mouse = new THREE.Vector2(0, 0);
 
     // ── Particles ─────────────────────────────────────────
-    const particleCount = 50000;
+    const isMobile = window.innerWidth < 768;
+    const particleCount = isMobile ? 12000 : 35000;
     const positions = new Float32Array(particleCount * 3);
     const originalPositions = new Float32Array(particleCount * 3);
     const colors = new Float32Array(particleCount * 3);
@@ -125,38 +126,58 @@ export const WovenCanvas = () => {
       const elapsedTime = performance.now() * 0.001;
 
       const mouseWorld = new THREE.Vector3(mouse.x * 3, mouse.y * 3, 0);
+      const mx = mouseWorld.x;
+      const my = mouseWorld.y;
+      const mz = mouseWorld.z;
 
       for (let i = 0; i < particleCount; i++) {
         const ix = i * 3;
         const iy = i * 3 + 1;
         const iz = i * 3 + 2;
 
-        const currentPos = new THREE.Vector3(positions[ix], positions[iy], positions[iz]);
-        const originalPos = new THREE.Vector3(originalPositions[ix], originalPositions[iy], originalPositions[iz]);
-        const velocity = new THREE.Vector3(velocities[ix], velocities[iy], velocities[iz]);
+        const px = positions[ix];
+        const py = positions[iy];
+        const pz = positions[iz];
+
+        const opx = originalPositions[ix];
+        const opy = originalPositions[iy];
+        const opz = originalPositions[iz];
+
+        let vx = velocities[ix];
+        let vy = velocities[iy];
+        let vz = velocities[iz];
 
         // Repel from mouse
-        const dist = currentPos.distanceTo(mouseWorld);
+        const dx = px - mx;
+        const dy = py - my;
+        const dz = pz - mz;
+        const distSq = dx * dx + dy * dy + dz * dz;
+        const dist = Math.sqrt(distSq);
+
         if (dist < 1.5) {
           const force = (1.5 - dist) * 0.01;
-          const direction = new THREE.Vector3().subVectors(currentPos, mouseWorld).normalize();
-          velocity.add(direction.multiplyScalar(force));
+          const invDist = 1 / (dist || 1);
+          vx += dx * invDist * force;
+          vy += dy * invDist * force;
+          vz += dz * invDist * force;
         }
 
         // Return to original position
-        const returnForce = new THREE.Vector3().subVectors(originalPos, currentPos).multiplyScalar(0.001);
-        velocity.add(returnForce);
+        const rx = (opx - px) * 0.001;
+        const ry = (opy - py) * 0.001;
+        const rz = (opz - pz) * 0.001;
 
-        // Damping
-        velocity.multiplyScalar(0.95);
+        vx = (vx + rx) * 0.95;
+        vy = (vy + ry) * 0.95;
+        vz = (vz + rz) * 0.95;
 
-        positions[ix] += velocity.x;
-        positions[iy] += velocity.y;
-        positions[iz] += velocity.z;
+        positions[ix] = px + vx;
+        positions[iy] = py + vy;
+        positions[iz] = pz + vz;
 
-        velocities[ix] = velocity.x;
-        velocities[iy] = velocity.y;
-        velocities[iz] = velocity.z;
+        velocities[ix] = vx;
+        velocities[iy] = vy;
+        velocities[iz] = vz;
       }
       geometry.attributes.position.needsUpdate = true;
 
