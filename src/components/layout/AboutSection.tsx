@@ -10,6 +10,7 @@ import {
 } from 'react-icons/si';
 
 export default function AboutSection() {
+
   return (
     <section
       id="about"
@@ -31,26 +32,17 @@ export default function AboutSection() {
       </div>
 
       {/* ── Macbook 3D Model ── */}
-      <motion.div
-        initial={{ opacity: 0, y: 40 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, margin: '-40px' }}
-        transition={{ duration: 0.7, delay: 0.2, ease: [0.25, 0.46, 0.45, 0.94] }}
+      <div
         className="relative w-full flex items-center justify-center md:justify-end mt-12 md:mt-16 px-4 sm:px-6 md:px-8 lg:px-24"
         style={{ height: '200px' }}
       >
-        <div
+        <Macbook
           style={{
-            width: '150px',
-            height: '96px',
-            position: 'relative',
             transform: 'translateY(-80px) scale(1.3)',
             transformOrigin: 'center center',
           }}
-        >
-          <Macbook />
-        </div>
-      </motion.div>
+        />
+      </div>
 
       {/* ── Tech Stack Logo Loop ── */}
       <motion.div
