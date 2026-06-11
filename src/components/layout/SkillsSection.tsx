@@ -116,7 +116,7 @@ const categories = [
 
 export default function SkillsSection() {
   const sectionRef = useRef<HTMLDivElement>(null);
-  const isInView = useInView(sectionRef, { margin: '200px', once: true });
+  const isInView = useInView(sectionRef, { margin: '200px', once: false });
   const [webglAvailable, setWebglAvailable] = useState(true);
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const [isMobile, setIsMobile] = useState(false);
@@ -177,6 +177,25 @@ export default function SkillsSection() {
 
         {/* RIGHT column: sticky skill cards with flying reveal */}
         <div className="grid gap-2 w-full md:w-[50%]">
+          {/* Mobile-only 3D Woven Canvas visualizer */}
+          <div className="md:hidden w-full h-[220px] mb-4 pointer-events-auto flex items-center justify-center relative rounded-3xl border border-white/5 bg-black/40 overflow-hidden">
+            {!webglAvailable ? (
+              <div className="w-full h-full flex flex-col items-center justify-center text-center p-4">
+                <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#DFBE8B]/20 to-[#8F5C64]/20 blur-xl absolute" style={{ filter: 'blur(30px)' }} />
+                <p className="text-gray-500 text-xs mt-2 relative z-10">3D Visualizer unavailable (WebGL disabled/unsupported)</p>
+              </div>
+            ) : (
+              <ErrorBoundary fallback={
+                <div className="w-full h-full flex flex-col items-center justify-center text-center p-4">
+                  <div className="w-24 h-24 rounded-full bg-gradient-to-br from-[#DFBE8B]/20 to-[#8F5C64]/20 blur-xl absolute" style={{ filter: 'blur(30px)' }} />
+                  <p className="text-gray-500 text-xs mt-2 relative z-10">3D Visualizer unavailable (WebGL disabled/unsupported)</p>
+                </div>
+              }>
+                {(isMobile || isInView) ? <WovenCanvas /> : <div className="w-full h-full" />}
+              </ErrorBoundary>
+            )}
+          </div>
+
           {categories.map((cat, i) => {
             const isHovered = hoveredIdx === i;
             const rot = isMobile ? 0 : cat.rotation;
