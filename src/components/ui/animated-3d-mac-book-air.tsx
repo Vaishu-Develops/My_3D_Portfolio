@@ -1,6 +1,11 @@
 import React from 'react';
 
-const Macbook: React.FC = () => {
+interface MacbookProps {
+  className?: string;
+  style?: React.CSSProperties;
+}
+
+const Macbook: React.FC<MacbookProps> = ({ className = '', style }) => {
   // Base classes for keys, animation will be added via custom-animate-keys
   const keyBaseClasses = "w-[6px] h-[6px] bg-[#444] float-left m-[1px] rounded-[2px] shadow-[0_-2px_0_#222] macbook-key custom-animate-keys";
   // Note: macbook-key applies transform: translateZ(-2px) from index.css
@@ -8,7 +13,7 @@ const Macbook: React.FC = () => {
 
   return (
     // `perspective` is applied by `macbook-container` class from index.css
-    <div className="macbook-container w-[150px] h-[96px] relative mx-auto">
+    <div className={`macbook-container w-[150px] h-[96px] relative mx-auto ${className}`} style={style}>
       {/* 
         `transform-style: preserve-3d` applied by `macbook-inner` from index.css.
         Initial transform `rotateX(-20deg) rotateY(0deg) rotateZ(0deg)` is the 0% state of `rotate` animation.
