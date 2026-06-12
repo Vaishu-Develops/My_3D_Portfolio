@@ -8,6 +8,7 @@ import SkillsSection from '../components/layout/SkillsSection';
 import ProjectsSection from '../components/layout/ProjectsSection';
 import GallerySection from '../components/layout/GallerySection';
 import EducationSection from '../components/layout/EducationSection';
+import ContactSection from '../components/layout/ContactSection';
 import ScrollStack, { ScrollStackItem } from '../components/ui/ScrollStack';
 
 
@@ -81,6 +82,10 @@ export default function Home() {
 
         <ScrollStackItem>
           <EducationSection />
+        </ScrollStackItem>
+
+        <ScrollStackItem>
+          <ContactSection />
         </ScrollStackItem>
       </ScrollStack>
     </motion.div>
