@@ -13,7 +13,7 @@ const Macbook: React.FC<MacbookProps> = ({ className = '', style }) => {
 
   return (
     // `perspective` is applied by `macbook-container` class from index.css
-    <div className={`macbook-container w-[150px] h-[96px] relative mx-auto ${className}`} style={style}>
+    <div className={`macbook-container w-[150px] h-[96px] relative ${className}`} style={style}>
       {/* 
         `transform-style: preserve-3d` applied by `macbook-inner` from index.css.
         Initial transform `rotateX(-20deg) rotateY(0deg) rotateZ(0deg)` is the 0% state of `rotate` animation.
