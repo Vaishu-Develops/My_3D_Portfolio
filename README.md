@@ -106,6 +106,36 @@ Notes on WebGL & Fallbacks
 - All WebGL-based components detect whether the browser supports a WebGL context and render a friendly fallback if not (see HeroSection and ProjectsSection behavior).
 - Heavy scenes and Spline embeds are lazy-loaded to reduce initial memory and CPU spikes.
 
+### Additional 3D Concepts in the Codebase (not directly mounted in App.tsx)
+
+These are creative 3D and motion experiments that already exist in the project structure, but are not currently wired directly into the main App.tsx route flow. They are great examples of reusable assets and future portfolio expansions:
+
+- 3D Image Gallery — src/components/ui/3d-image-gallery.tsx
+  - A 3D gallery concept with layered perspective motion and immersive visual browsing.
+
+- Woven Light Hero — src/components/ui/woven-light-hero.tsx
+  - A layered hero composition using light threads and ambient depth for a premium tech aesthetic.
+
+- Geometric Blur Mesh — src/components/ui/geometric-blur-mesh.tsx
+  - Abstract geometry and blurred mesh experimentation for depth-heavy backgrounds.
+
+- Magic Bento / Abstract UI Grid — src/components/ui/MagicBento.tsx
+  - A modular, glassy component concept for dashboards or advanced landing section layouts.
+
+- Raycast Animated Background — src/components/ui/raycast-animated-background.tsx
+  - A dynamic background with directional light/raycast feel for cinematic portfolio sections.
+
+- Light Rays, Threads & Atmosphere — src/components/ui/LightRays.tsx, Threads.tsx, AtmosphereLayer.tsx
+  - Extra environment effects for atmospheric motion, glow trails and layered backgrounds.
+
+- Splash Cursor / Touch Ripple / Click Spark — src/components/ui/SplashCursor.tsx, TouchRippleTrail.tsx, ClickSpark.tsx
+  - Micro-interaction motion pieces that enhance interactivity without being directly mounted in the core page shell.
+
+- Floating UI / Interaction Experiments — src/components/ui/FloatingActionBubble.tsx, MagneticButton.tsx, LayeredText, VapourTextEffect
+  - Experimental UI components for advanced hover, motion, and ambient text treatment.
+
+These files show that the codebase contains many 3D and motion-design experiments beyond the live homepage experience, making the portfolio feel more like a creative design system than a single page.
+
 ---
 
 ## 🛠️ Tech Stack
