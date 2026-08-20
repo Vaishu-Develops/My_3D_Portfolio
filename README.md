@@ -51,14 +51,60 @@ The project uses the following animation patterns: GSAP tweens for timeline cont
 
 ## ✨ Features
 
-- 🎨 **3D Graphics & Animations** – Powered by Three.js and React Three Fiber for immersive visuals
-- 🌊 **Smooth Scrolling** – Enhanced UX with Lenis smooth scroll integration
-- ⚡ **Lightning Fast** – Built with Vite for instant HMR and optimized production builds
-- 📱 **Fully Responsive** – Looks perfect on desktop, tablet, and mobile devices
-- 🎭 **Advanced Animations** – GSAP, Framer Motion, and Lottie for smooth transitions
-- 🎯 **Interactive Components** – Custom UI elements with click effects and visual feedback
-- 🔥 **Modern Stack** – React 19, TypeScript, Tailwind CSS for maintainability
-- 📦 **Modular Architecture** – Clean component structure for easy customization..
+This portfolio showcases a production-ready, interactive 3D website with a focus on motion, depth and real-time WebGL experiences. Key features include:
+
+- 🎨 3D Graphics & Animations — Built with Three.js, React Three Fiber and Spline for immersive models and scenes
+- 🧩 Rich Interactive Components — Reusable 3D cards, scanner streams, animated MacBook display, and more (see 3D Designs & Models below)
+- 🌊 Smooth Scrolling & Parallax — Lenis-powered smooth scrolling combined with scroll-driven parallax layers and reveal animations
+- ⚡ Fast Development & Builds — Vite for instant HMR and optimized production bundles
+- 📱 Responsive by Design — Layouts and 3D components adapt to desktop, tablet and mobile while offering graceful fallbacks
+- 🎭 Advanced Animation Tooling — GSAP for timeline control, Framer Motion for page transitions, and Lottie for lightweight SVG animations
+- 🎯 Accessibility & Interactions — Click/hover feedback, keyboard-focusable controls and progressive enhancement where WebGL is unavailable
+- 🔒 Robust UX with Fallbacks — WebGL components detect support and render safe static/fallback UI when hardware acceleration is disabled
+- 🔥 Modern Stack & Maintainability — React 19, TypeScript, Tailwind CSS, modular component structure for easy extension
+- 📦 Component-first Architecture — Clear separation between 3D, layout and UI primitives for reuse and testing
+
+---
+
+## 🧩 3D Designs & Models
+
+A curated list of the 3D scenes, models and experiential components included in this portfolio, with short descriptions and their implementation locations.
+
+- 3D Security / ID Card (Scanner Stream)
+  - Description: An interactive stream of scanner-style ID cards used as a visual project carousel. Supports flipping, scan effects and graceful fallback when WebGL is not available.
+  - Implemented in: src/components/ui/scanner-card-stream.tsx and showcased by src/components/layout/ProjectsSection.tsx (ScannerCardStream)
+
+- 3D ID / Experience Card
+  - Description: Stylized 3D "ID" flip-cards used in the Experience section (front: role & company, back: details and metrics). Includes chip/holographic visual details and 3D rotation.
+  - Implemented in: src/components/layout/ExperienceSection.tsx and src/components/ui/3d-card.tsx
+
+- 3D Contract / Project Page (Spline Scenes)
+  - Description: Full-scene Spline embeds for unique project pages and robotic/scene previews (e.g., greeting robot). Scenes are lazy-loaded and wrapped with error boundaries.
+  - Implemented in: Spline scenes under /public or root (scene.splinecode, genkub_greeting_robot.spline) and used in src/components/layout/HeroSection.tsx (Spline import)
+
+- 3D About / Halide Topo Hero
+  - Description: Parallax 3D hero canvas for the About section that provides depth and subtle motion to the topographic/halo composition.
+  - Implemented in: src/components/ui/halide-topo-hero.tsx (rendered by src/components/layout/AboutSection.tsx)
+
+- Animated MacBook (3D MacBook Display)
+  - Description: A responsive 3D MacBook component used to present work screenshots and looping previews inside a 3D frame.
+  - Implemented in: src/components/ui/animated-3d-mac-book-air.tsx and used in AboutSection.tsx
+
+- Background3D & Immersive Scenes
+  - Description: Global 3D backgrounds such as starfields, procedural plasma shaders and custom geometry backgrounds that sit behind the main UI.
+  - Implemented in: src/components/3d/Background3D.tsx, src/components/ui/Plasma.tsx, and related shader components
+
+- 3D Cards & Gallery Components
+  - Description: Interactive 3D cards, galleries and a 3D image carousel with perspective transforms and depth stacking.
+  - Implemented in: src/components/ui/3d-card.tsx, src/components/layout/GallerySection.tsx
+
+- Lanyard & Badge Components
+  - Description: Badge/lanyard UI demonstrating micro-interactions and animated attachments (useful for ID previews and branding).
+  - Implemented in: Lanyard_github.tsx, Lanyard_original.tsx, Lanyard_remote.jsx and src/components/ui/lanyard.png (assets)
+
+Notes on WebGL & Fallbacks
+- All WebGL-based components detect whether the browser supports a WebGL context and render a friendly fallback if not (see HeroSection and ProjectsSection behavior).
+- Heavy scenes and Spline embeds are lazy-loaded to reduce initial memory and CPU spikes.
 
 ---
 
